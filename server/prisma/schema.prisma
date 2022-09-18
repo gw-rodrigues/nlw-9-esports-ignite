@@ -14,6 +14,7 @@ datasource db {
 //porque id == number?
 //podem ser faceis de prever e ser obtidos pelo eterior forma illegal
 //usamos id com string podemos gerar chaves unicas evitando como:
+// id        String @id @default(uuid())
 // uuid, cuuid, snowflake (twitter)
 // relacao entre game -> ad
 // como game tem varios ad, adicionamos um ad[] de model
@@ -21,7 +22,7 @@ datasource db {
 // nao base de dados nao vai exitir campo ads, mais sim para prisma identificar/saber
 // quais campos e tabelas estao relacionados
 model Game {
-    id        String @id
+    id        String @id @default(uuid())
     title     String
     bannerUrl String
 
@@ -34,7 +35,7 @@ model Game {
 // game   Game   @relation(fields: [gameId], references: [id])
 // gameId String 
 model ad {
-    id              String   @id
+    id              String   @id @default(uuid())
     name            String
     yearsPlaying    Int
     discord         String
