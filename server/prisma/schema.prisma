@@ -55,6 +55,11 @@ model ad {
 // ao executar esse comando ira criar alterar a database, na url do env.
 // ira criar um controle de versao, na pasta prisma indicando a qual migracao foi feita
 // com nome: migration.sql
+// - generate === dev
+
+// ao executar esse comando, sera criado um ficheiro n pasta node_modules, .prisma, client, index.d.ts (.d.ts siginifica .d = definition, .ts typescript) - neste ficheiro so tem as definicoes de tipos, nao codigo exatamente
+// ele gera, cria os tipos dos nossos modelos, funcionalidades e métodos que podemos usar na database -  inteligencia de IDE
+// exemplo. const games = prisma.game.findMany({ ...cursor, include, select, etc... })
 
 //instalar extensoes SQLite para pode ver a databases
 // lado direito do rato, open database, na aba sqilte explorer podemos ver as tabelas da database
