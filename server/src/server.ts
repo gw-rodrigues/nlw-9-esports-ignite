@@ -79,7 +79,7 @@ app.post("/games/:id/ads", async (request, response) => {
       yearsPlaying: body.yearsPlaying,
       discord: body.discord,
       weekDays: body.weeDays.join(","),
-      hourStar: body.hourStar,
+      hourStart: body.hourStart,
       hourEnd: body.hourEnd,
       useVoiceChannel: body.useVoiceChannel,
     },
@@ -95,7 +95,7 @@ app.get("/games/:id/ads", async (request, response) => {
       //select = quais campos queremos mostrar
       id: true,
       name: true,
-      weeDays: true,
+      weekDays: true,
       useVoiceChannel: true,
       yearsPlaying: true,
       hourStart: true,
