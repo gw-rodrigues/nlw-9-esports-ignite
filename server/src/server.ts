@@ -8,6 +8,7 @@
  */
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { convertHoursToMinutes } from "./utils/convert-hours-to-minutes";
 
 /**
  * Iniciar rotas com express
@@ -70,22 +71,26 @@ app.post("/games/:id/ads", async (request, response) => {
    * }
    */
   const gameId = request.params.id;
-  const body = request.body;
+  const body: any = request.body;
 
-  const ad = prisma.ad.create({
+  /**
+   * validação com "zod javascript"
+   */
+
+  const ad = await prisma.ad.create({
     data: {
       gameId,
       name: body.name,
       yearsPlaying: body.yearsPlaying,
       discord: body.discord,
-      weekDays: body.weeDays.join(","),
-      hourStart: body.hourStart,
-      hourEnd: body.hourEnd,
+      weekDays: body.weekDays.join(","),
+      hourStart: convertHoursToMinutes(body.hourStart),
+      hourEnd: convertHoursToMinutes(body.hourEnd),
       useVoiceChannel: body.useVoiceChannel,
     },
   });
 
-  return response.status(201).json(body);
+  return response.status(201).json(ad);
 });
 
 app.get("/games/:id/ads", async (request, response) => {
@@ -114,6 +119,7 @@ app.get("/games/:id/ads", async (request, response) => {
   /**
    * Iremos formatar os valores recebidos na hora retorno
    */
+  return response.json(ads);
   return response.json(
     ads.map((ad: any) => {
       return {
