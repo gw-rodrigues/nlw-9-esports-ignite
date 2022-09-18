@@ -7,6 +7,15 @@
  * conexão com database previne a reinicialização do nosso server, assim fechará todas conexões, reiniciar e cria um nova conexão
  */
 import express from "express";
+
+/**
+ * Cors - serve para proteger no aplicação, contra frontend que nao queremos que tenha acesso ao nosso server.
+ *  - Quais endereços frontend que podem ter acesso nosso backend.
+ *  - Se nao for configurado nenhum frontend vai ter acesso ao nosso servidor app.
+ * = npm i cors
+ * = npm i @types/cors -D (tipos typescript)
+ */
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import { convertHoursToMinutes } from "./utils/convert-hours-to-minutes";
 import { convertMinutesToHours } from "./utils/convert-minutes-to-hours";
@@ -18,6 +27,15 @@ import { convertMinutesToHours } from "./utils/convert-minutes-to-hours";
  */
 const app = express();
 app.use(express.json());
+
+/**
+ * app.use(cors()) === todos frontend terão acesso ao nosso servidor
+ * 
+ * app.use(cors({
+  origin:"qual endereço tem acesso, ex: http://rockseat.com.br"
+}));
+ */
+app.use(cors());
 
 /**
  * Ciar nova conexão do prisma com database
