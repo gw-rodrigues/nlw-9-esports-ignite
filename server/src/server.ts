@@ -9,6 +9,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { convertHoursToMinutes } from "./utils/convert-hours-to-minutes";
+import { convertMinutesToHours } from "./utils/convert-minutes-to-hours";
 
 /**
  * Iniciar rotas com express
@@ -119,12 +120,13 @@ app.get("/games/:id/ads", async (request, response) => {
   /**
    * Iremos formatar os valores recebidos na hora retorno
    */
-  return response.json(ads);
   return response.json(
     ads.map((ad: any) => {
       return {
         ...ad, //pegamos todos os valores
-        weekDays: ad.weeDays.split(","), //mas alteramos apenas esse key-value do ad / como e uma string vamos fazer split para passar para um array, cada dia da semana
+        weekDays: ad.weekDays.split(","), //mas alteramos apenas esse key-value do ad / como e uma string vamos fazer split para passar para um array, cada dia da semana
+        hourStart: convertMinutesToHours(ad.hourStart),
+        hourEnd: convertMinutesToHours(ad.hourEnd),
       };
     })
   );
