@@ -1,0 +1,18 @@
+#temos que criar algum campos de jogos, poque nao conseguimos criar, nao tem essa funcionalidade na nossa app
+
+title: League of Legends
+bannerUrl: https://static-cdn.jtvnw.net/ttv-boxart/21779-285x380.jpg
+
+title: Valorant
+bannerUrl: https://static-cdn.jtvnw.net/ttv-boxart/516575-285x380.jpg
+
+title: Minecraft
+bannerUrl: https://static-cdn.jtvnw.net/ttv-boxart/27471_IGDB-285x380.jpg
+
+title: COD MW2
+bannerUrl: https://static-cdn.jtvnw.net/ttv-boxart/1678052513_IGDB-285x380.jpg
+
+## add more games
+
+
+# agora devemos criar a tabela de anúncios (usar npx prisma studio para add)
