@@ -1,0 +1,63 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+//object configured
+// type = provider
+// url = url - variavel env
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+//Podemos criar modelos
+//porque id == number?
+//podem ser faceis de prever e ser obtidos pelo eterior forma illegal
+//usamos id com string podemos gerar chaves unicas evitando como:
+// uuid, cuuid, snowflake (twitter)
+// relacao entre game -> ad
+// como game tem varios ad, adicionamos um ad[] de model
+// ads  ad[]
+// nao base de dados nao vai exitir campo ads, mais sim para prisma identificar/saber
+// quais campos e tabelas estao relacionados
+model Game {
+    id        String @id
+    title     String
+    bannerUrl String
+
+    ads ad[]
+}
+
+// ad vai sempre pertencer a 1 game, mas 1 game pode ter varios anuncios
+//createdAt a data vai ser definida automaticamente por padrao
+// relacao entre tabela game -> ad
+// game   Game   @relation(fields: [gameId], references: [id])
+// gameId String 
+model ad {
+    id              String   @id
+    name            String
+    yearsPlaying    Int
+    discord         String
+    weekDays        String
+    hourStart       Int
+    hourEnd         Int
+    useVoiceChannel Boolean
+    createdAt       DateTime @default(now())
+
+    game   Game   @relation(fields: [gameId], references: [id])
+    gameId String
+}
+
+//CMDS 
+//npx prisma migrate (migrate = controlled version database)
+// - dev : (name new migration)(escrever a acao/alteracao feita)
+// ao executar esse comando ira criar alterar a database, na url do env.
+// ira criar um controle de versao, na pasta prisma indicando a qual migracao foi feita
+// com nome: migration.sql
+
+//instalar extensoes SQLite para pode ver a databases
+// lado direito do rato, open database, na aba sqilte explorer podemos ver as tabelas da database
+
+//Prisma studio
+//npx prisma stuido
+// ira gerar uma interface grafica na url para poder navegar na database    
