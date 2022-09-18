@@ -19,7 +19,7 @@ app.get("/games/:id/ads", (request, response) => {
   ]);
 });
 
-app.get("/games/:id/discord", (request, response) => {
+app.get("/ads/:id/discord", (request, response) => {
   return response.json([]);
 });
 
