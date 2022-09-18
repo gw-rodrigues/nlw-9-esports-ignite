@@ -1,13 +1,17 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 //object configured
 // type = provider
 // url = url - variavel env
+
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 //Podemos criar modelos
@@ -22,11 +26,11 @@ datasource db {
 // nao base de dados nao vai exitir campo ads, mais sim para prisma identificar/saber
 // quais campos e tabelas estao relacionados
 model Game {
-    id        String @id @default(uuid())
-    title     String
-    bannerUrl String
+  id        String @id @default(uuid())
+  title     String
+  bannerUrl String
 
-    ads ad[]
+  ads ad[]
 }
 
 // ad vai sempre pertencer a 1 game, mas 1 game pode ter varios anuncios
@@ -35,18 +39,18 @@ model Game {
 // game   Game   @relation(fields: [gameId], references: [id])
 // gameId String 
 model ad {
-    id              String   @id @default(uuid())
-    name            String
-    yearsPlaying    Int
-    discord         String
-    weekDays        String
-    hourStart       Int
-    hourEnd         Int
-    useVoiceChannel Boolean
-    createdAt       DateTime @default(now())
+  id              String   @id @default(uuid())
+  name            String
+  yearsPlaying    Int
+  discord         String
+  weekDays        String
+  hourStart       Int
+  hourEnd         Int
+  useVoiceChannel Boolean
+  createdAt       DateTime @default(now())
 
-    game   Game   @relation(fields: [gameId], references: [id])
-    gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
 }
 
 //CMDS 
