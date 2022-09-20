@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, Image, FlatList } from "react-native";
+import { Image, FlatList } from "react-native";
+/**
+ * NO LUGAR do -> View
+ * SafeAreaView -> ajuda evitar areas view de diversos dispositivos, como botoes e cortes/design da tela.
+ */
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import logoImg from "../../assets/logo-nlw-esports.png";
 import { GameCard, GameCardProps } from "../../components/GameCard";
 import { Heading } from "../../components/Heading";
@@ -21,7 +27,7 @@ export function Home() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image source={logoImg} style={styles.logo} />
       <Heading
         title="Encontre seu duo!"
@@ -35,6 +41,6 @@ export function Home() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.contentList}
       />
-    </View>
+    </SafeAreaView>
   );
 }
