@@ -21,11 +21,12 @@ import { Game } from "../screens/Game";
     </Navigator>
 
  */
-const { Navigator, Screen } = createNativeStackNavigator;
+
+const { Navigator, Screen } = createNativeStackNavigator();
 
 export function AppRoutes() {
   return (
-    <Navigator screenOptions={{ headerShow: false }}>
+    <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="home" component={Home} />
       <Screen name="game" component={Game} />
     </Navigator>
