@@ -17,7 +17,8 @@ export interface GameCardProps {
   _count: {
     ads: number;
   };
-  bannerUrl: ImageSourcePropType;
+  bannerUrl: string;
+  //bannerUrl: ImageSourcePropType;
   /** -> String
    * -> soure={ {uri:data.bannerURL} }
    */
@@ -30,7 +31,7 @@ interface Props extends TouchableOpacityProps {
 export function GameCard({ data, ...rest }: Props) {
   return (
     <TouchableOpacity style={styles.container}>
-      <ImageBackground source={data.bannerUrl} style={styles.cover}>
+      <ImageBackground source={{ uri: data.bannerUrl }} style={styles.cover}>
         <LinearGradient style={styles.footer} colors={THEME.COLORS.FOOTER}>
           <Text style={styles.name}>{data.title}</Text>
           <Text style={styles.ads}>{data._count.ads} anúncios</Text>
