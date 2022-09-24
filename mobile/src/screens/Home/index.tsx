@@ -13,24 +13,23 @@ import { Heading } from "../../components/Heading";
 import { Background } from "../../components/Background";
 import { styles } from "./styles";
 
-import { GAMES } from "../../utils/games";
-
 export function Home() {
   const [games, setGames] = useState<GameCardProps[]>([]);
   useEffect(() => {
     try {
-      fetch("http://localhost:3333/games")
+      fetch("http://192.168.3.7:3333/games")
         .then((response) => response.json())
-        .then((data) => setGames(data));
+        .then((data) => {
+          setGames(data);
+        });
     } catch (error) {
       console.log(error);
     }
-    setGames(GAMES);
   }, []);
 
   /**
    * useNavigation() -> recebemos as rotas, e opções de navegação
-   *  - navigation.nagigate("game"); -> conseguimos navegar entre páginas
+   *  - navigation.navigate("game"); -> conseguimos navegar entre páginas
    */
   const navigation = useNavigation();
   /**
@@ -40,7 +39,7 @@ export function Home() {
    * -> navigation.nagigate("game", { id, title, bannerUrl });
    */
   function handleOpenGame({ id, title, bannerUrl }: GameCardProps) {
-    navigation.nagigate("game", { id, title, bannerUrl });
+    navigation.navigate("game", { id, title, bannerUrl });
   }
 
   return (
