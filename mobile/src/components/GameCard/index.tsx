@@ -30,7 +30,7 @@ interface Props extends TouchableOpacityProps {
 
 export function GameCard({ data, ...rest }: Props) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} {...rest}>
       <ImageBackground source={{ uri: data.bannerUrl }} style={styles.cover}>
         <LinearGradient style={styles.footer} colors={THEME.COLORS.FOOTER}>
           <Text style={styles.name}>{data.title}</Text>
