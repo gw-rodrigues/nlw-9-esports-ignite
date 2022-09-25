@@ -1,4 +1,5 @@
-import { TouchableOpacity, View, Image } from "react-native";
+import { useEffect, useState } from "react";
+import { TouchableOpacity, View, Image, FlatList, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 /**
  * Para podermos obter as informações de navegação e os params
@@ -21,13 +22,28 @@ import { GameParams } from "../../@types/navigation";
 
 import { Background } from "../../components/Background";
 import { Heading } from "../../components/Heading";
+import { DuoCard, DuoCardProps } from "../../components/DuoCard";
 
 export function Game() {
+  const [duos, setDuos] = useState<DuoCardProps[]>([]);
+
   const route = useRoute();
   const game = route.params as GameParams;
-  console.log(game);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    try {
+      fetch(`http://192.168.3.7:3333/games/${game.id}/ads`)
+        .then((response) => response.json())
+        .then((data) => {
+          setDuos(data);
+          console.log(data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <Background>
@@ -44,8 +60,31 @@ export function Game() {
           <View style={styles.right} />
         </View>
 
-        <Image source={{ uri: game.bannerUrl }} style={styles.cover} resizeMode="cover" />
+        <Image
+          source={{ uri: game.bannerUrl }}
+          style={styles.cover}
+          resizeMode="cover"
+        />
         <Heading title={game.title} subtitle="Conecte-se e comece a jogar!" />
+
+        <FlatList
+          data={duos}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <DuoCard data={item} onConnect={() => {}} />
+          )}
+          horizontal
+          style={styles.containerList}
+          contentContainerStyle={[
+            duos.length > 0 ? styles.contentList : styles.emptyListContent,
+          ]}
+          showsHorizontalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            <Text style={styles.emptyListText}>
+              Nao existem anúncios para este jogo.
+            </Text>
+          )}
+        />
       </SafeAreaView>
     </Background>
   );
