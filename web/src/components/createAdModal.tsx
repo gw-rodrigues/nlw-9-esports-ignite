@@ -1,8 +1,22 @@
-import { GameController, MagnifyingGlassPlus } from "phosphor-react";
+import { useEffect, useState } from "react";
+import { Check, GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as Checkbox from "@radix-ui/react-checkbox";
+import * as Select from "@radix-ui/react-select";
 import { Input } from "./Form/Input";
+import { Game } from "../App";
 
 export function CreateAdModal() {
+  const [games, setGames] = useState<Game[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3333/games")
+      .then((response) => response.json())
+      .then((data) => {
+        setGames(data);
+      });
+  }, []);
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
@@ -14,11 +28,48 @@ export function CreateAdModal() {
         <form className="flex flex-col gap-4 mt-8">
           <div className="flex flex-col gap-2">
             <label htmlFor="game">Qual o game?</label>
-            <Input
-              id="game"
-              value="Selecione o game que deseja jogar"
-              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500"
-            />
+            <Select.Root>
+              <Select.Trigger
+                id="game"
+                className="bg-zinc-900 py-3 px-4 rounded text-sm text-left placeholder:text-zinc-500"
+              >
+                <Select.Value placeholder="Selecione o game que deseja jogar" />
+              </Select.Trigger>
+
+              <Select.Portal>
+                <Select.Content className="overflow-hidden bg-zinc-900 rounded border border-zinc-700">
+                  <Select.ScrollUpButton />
+                  <Select.Viewport className="p-5">
+                    <Select.Item
+                      key="-1"
+                      value=""
+                      className="text-sm text-zinc-500 rounded flex items-center h-6 px-8 relative select-none"
+                      disabled
+                    >
+                      <Select.ItemText>
+                        Selecione o game que deseja jogar
+                      </Select.ItemText>
+                      <Select.ItemIndicator className="absolute left-0 w-5 inline-flex items-center justify-center">
+                        <Check />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                    {games.map((game) => (
+                      <Select.Item
+                        key={game.id}
+                        value={game.id}
+                        className="text-sm text-white rounded flex items-center h-6 px-8 my-1 relative select-none cursor-pointer hover:text-violet-200 hover:bg-violet-500"
+                      >
+                        <Select.ItemText>{game.title}</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-0 w-5 inline-flex items-center justify-center">
+                          <Check className="text-violet-500" />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                    ))}
+                  </Select.Viewport>
+                  <Select.ScrollDownButton />
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Seu nome (ou nickname)</label>
@@ -77,8 +128,15 @@ export function CreateAdModal() {
               </div>
             </div>
           </div>
-          <div className="mt-2 flex gap-2 text-sm">
-            <Input id="useVoiceChannel" type="checkbox" />
+          <div className="mt-2 flex items-center gap-2 text-sm">
+            <Checkbox.Root
+              id="useVoiceChannel"
+              className="w-6 h-6 p-1 rounded bg-zinc-900"
+            >
+              <Checkbox.Indicator>
+                <Check className="w-4 h-4 text-emerald-400" />
+              </Checkbox.Indicator>
+            </Checkbox.Root>
             <label htmlFor="useVoiceChannel">
               Costumo me conectar ao chat de voz
             </label>
