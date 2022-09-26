@@ -8,8 +8,9 @@ import { Input } from "./Form/Input";
 import { Game } from "../App";
 
 export function CreateAdModal() {
-  const [weekDays, setWeekDays] = useState<string[]>([]);
   const [games, setGames] = useState<Game[]>([]);
+  const [weekDays, setWeekDays] = useState<string[]>([]);
+  const [useVoiceChannel, setUseVoiceChannel] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:3333/games")
@@ -29,6 +30,7 @@ export function CreateAdModal() {
 
     console.log(data);
     console.log(weekDays);
+    console.log(useVoiceChannel);
   }
 
   return (
@@ -122,14 +124,14 @@ export function CreateAdModal() {
                 id="weekDays"
                 type="multiple"
                 className="grid grid-cols-4 gap-1"
-                onValueChange={setWeekDays}
                 value={weekDays}
+                onValueChange={setWeekDays}
               >
                 <ToggleGroup.Item
                   value="0"
                   title="Domingo"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("0") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("0") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   D
@@ -137,8 +139,8 @@ export function CreateAdModal() {
                 <ToggleGroup.Item
                   value="1"
                   title="Segunda"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("1") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("1") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   S
@@ -146,8 +148,8 @@ export function CreateAdModal() {
                 <ToggleGroup.Item
                   value="2"
                   title="Terça"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("2") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("2") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   T
@@ -155,8 +157,8 @@ export function CreateAdModal() {
                 <ToggleGroup.Item
                   value="3"
                   title="Quarta"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("3") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("3") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   Q
@@ -164,8 +166,8 @@ export function CreateAdModal() {
                 <ToggleGroup.Item
                   value="4"
                   title="Quinta"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("4") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("4") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   Q
@@ -173,8 +175,8 @@ export function CreateAdModal() {
                 <ToggleGroup.Item
                   value="5"
                   title="Sexta"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("5") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("5") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   S
@@ -182,8 +184,8 @@ export function CreateAdModal() {
                 <ToggleGroup.Item
                   value="6"
                   title="Sábado"
-                  className={`w-8 h-8 rounded bg-zinc-900 ${
-                    weekDays.includes("6") ? "bg-violet-500" : ""
+                  className={`w-8 h-8 rounded  ${
+                    weekDays.includes("6") ? "bg-violet-500" : "bg-zinc-900"
                   }`}
                 >
                   S
@@ -211,7 +213,14 @@ export function CreateAdModal() {
           <label className="mt-2 flex items-center gap-2 text-sm">
             <Checkbox.Root
               id="useVoiceChannel"
-              name="useVoiceChannel"
+              checked={useVoiceChannel}
+              onCheckedChange={(checked) => {
+                if (checked === true) {
+                  setUseVoiceChannel(true);
+                } else {
+                  setUseVoiceChannel(false);
+                }
+              }}
               className="w-6 h-6 p-1 rounded bg-zinc-900"
             >
               <Checkbox.Indicator>
