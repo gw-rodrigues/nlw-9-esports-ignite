@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import * as Dialog from "@radix-ui/react-dialog";
 
-interface Game {
+export interface Game {
   id: string;
   title: string;
   bannerUrl: string;
@@ -27,6 +27,7 @@ function App() {
         setGames(data);
       });
   }, []);
+
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20">
       <img src={logoImg} alt="logo" />
