@@ -1,13 +1,16 @@
-import "./styles/main.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 import logoImg from "./assets/logo-nlw-esports.svg";
 import { GameBanner } from "./components/GamerBanner";
 import { CreateAdBanner } from "./components/CreateAdBanner";
 import { CreateAdModal } from "./components/createAdModal";
-import { useEffect, useState } from "react";
 
+import { SpinnerGap } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
-import axios from "axios";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+import "./styles/main.css";
 
 export interface Game {
   id: string;
@@ -27,6 +30,16 @@ function App() {
     });
   }, []);
 
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    mode: "free",
+    slides: {
+      number: games.length,
+      perView: 6,
+      spacing: 15,
+    },
+  });
+
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20">
       <img src={logoImg} alt="logo" />
@@ -39,15 +52,19 @@ function App() {
         está aqui.
       </h1>
 
-      <div className="grid grid-cols-6 gap-6 mt-16">
-        {games.map((game) => (
-          <GameBanner
-            key={game.id}
-            bannerUrl={game.bannerUrl}
-            title={game.title}
-            adsCount={game._count.ads}
-          />
-        ))}
+      <div className="keen-slider  mt-16" ref={sliderRef}>
+        {games.length > 0 ? (
+          games.map((game) => (
+            <GameBanner
+              key={game.id}
+              bannerUrl={game.bannerUrl}
+              title={game.title}
+              adsCount={game._count.ads}
+            />
+          ))
+        ) : (
+          <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
+        )}
       </div>
 
       <Dialog.Root>
