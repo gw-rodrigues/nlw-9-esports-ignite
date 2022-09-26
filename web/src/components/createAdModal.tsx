@@ -1,3 +1,4 @@
+import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { Check, GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -13,11 +14,9 @@ export function CreateAdModal() {
   const [useVoiceChannel, setUseVoiceChannel] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3333/games")
-      .then((response) => response.json())
-      .then((data) => {
-        setGames(data);
-      });
+    axios("http://localhost:3333/games").then((response) => {
+      setGames(response.data);
+    });
   }, []);
 
   function handleCreateAt(event: FormEvent) {
