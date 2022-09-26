@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Check, GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
@@ -19,6 +19,18 @@ export function CreateAdModal() {
       });
   }, []);
 
+  function handleCreateAt(event: FormEvent) {
+    event.preventDefault();
+    console.log("envio form");
+
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    const data = Object.fromEntries(formData);
+
+    console.log(data);
+    console.log(weekDays);
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
@@ -27,19 +39,20 @@ export function CreateAdModal() {
           Publique um anúncio
         </Dialog.Title>
 
-        <form className="flex flex-col gap-4 mt-8">
+        <form onSubmit={handleCreateAt} className="flex flex-col gap-4 mt-8">
           <div className="flex flex-col gap-2">
             <label htmlFor="game">Qual o game?</label>
-            <Select.Root>
+            <Select.Root name="game">
               <Select.Trigger
                 id="game"
+                name="game"
                 className="bg-zinc-900 py-3 px-4 rounded text-sm text-left placeholder:text-zinc-500"
               >
                 <Select.Value placeholder="Selecione o game que deseja jogar" />
               </Select.Trigger>
 
               <Select.Portal>
-                <Select.Content className="overflow-hidden bg-zinc-900 rounded border border-zinc-700">
+                <Select.Content className=" bg-zinc-900 rounded border border-zinc-700">
                   <Select.ScrollUpButton />
                   <Select.Viewport className="p-5">
                     <Select.Item
@@ -77,8 +90,9 @@ export function CreateAdModal() {
             <label htmlFor="name">Seu nome (ou nickname)</label>
             <Input
               id="name"
+              name="name"
               type="text"
-              value="Como te chamam dentro do game?"
+              placeholder="Como te chamam dentro do game?"
             />
           </div>
           <div className="grid grid-cols-2 gap-6">
@@ -86,19 +100,26 @@ export function CreateAdModal() {
               <label htmlFor="yearsPlaying">Joga há quantos anos?</label>
               <Input
                 id="yearsPlaying"
+                name="yearsPlaying"
                 type="number"
-                value="Tudo bem ser ZERO"
+                placeholder="Tudo bem ser ZERO"
               />
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="discord">Qual seu Discord?</label>
-              <Input id="discord" type="text" value="Usuario#0000" />
+              <Input
+                id="discord"
+                name="discord"
+                type="text"
+                placeholder="Usuario#0000"
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
               <label htmlFor="weekDays">Quando costuma jogar?</label>
               <ToggleGroup.Root
+                id="weekDays"
                 type="multiple"
                 className="grid grid-cols-4 gap-1"
                 onValueChange={setWeekDays}
@@ -172,14 +193,25 @@ export function CreateAdModal() {
             <div className="flex flex-col gap-2 flex-1">
               <label htmlFor="hourStart">Qual horário do dia?</label>
               <div className="grid grid-cols-2 gap-2">
-                <Input id="hourStart" type="time" value="De" />
-                <Input id="hourEnd" type="time" value="Até" />
+                <Input
+                  id="hourStart"
+                  name="hourStart"
+                  type="time"
+                  placeholder="De"
+                />
+                <Input
+                  id="hourEnd"
+                  name="hourEnd"
+                  type="time"
+                  placeholder="Até"
+                />
               </div>
             </div>
           </div>
           <label className="mt-2 flex items-center gap-2 text-sm">
             <Checkbox.Root
               id="useVoiceChannel"
+              name="useVoiceChannel"
               className="w-6 h-6 p-1 rounded bg-zinc-900"
             >
               <Checkbox.Indicator>
