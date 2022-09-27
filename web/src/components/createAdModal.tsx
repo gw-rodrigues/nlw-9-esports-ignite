@@ -1,12 +1,24 @@
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
-import { Check, GameController } from "phosphor-react";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Checkbox from "@radix-ui/react-checkbox";
-import * as Select from "@radix-ui/react-select";
+
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { Input } from "./Form/Input";
 import { Game } from "../App";
+import { Checkbox } from "./Form/Checkbox";
+import { Select } from "./Form/Select";
+
+interface GameFormProps {
+  name: string;
+  yearsPlaying: number;
+  discord: string;
+  weekDays: string[];
+  hourEnd: string;
+  hourStart: string;
+  useVoiceChannel: boolean;
+}
 
 export function CreateAdModal() {
   const [games, setGames] = useState<Game[]>([]);
@@ -18,6 +30,16 @@ export function CreateAdModal() {
       setGames(response.data);
     });
   }, []);
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<GameFormProps>();
+
+  const onSubmit: SubmitHandler<GameFormProps> = (data) => {
+    console.log(data);
+  };
 
   async function handleCreateAt(event: FormEvent) {
     event.preventDefault();
@@ -53,52 +75,25 @@ export function CreateAdModal() {
           Publique um anúncio
         </Dialog.Title>
 
-        <form onSubmit={handleCreateAt} className="flex flex-col gap-4 mt-8">
+        <form
+          onSubmit={handleSubmit((data) => console.log(data))}
+          className="flex flex-col gap-4 mt-8"
+        >
           <div className="flex flex-col gap-2">
             <label htmlFor="game">Qual o game?</label>
-            <Select.Root name="game">
-              <Select.Trigger
-                id="game"
-                name="game"
-                className="bg-zinc-900 py-3 px-4 rounded text-sm text-left placeholder:text-zinc-500"
-              >
-                <Select.Value placeholder="Selecione o game que deseja jogar" />
-              </Select.Trigger>
 
-              <Select.Portal>
-                <Select.Content className=" bg-zinc-900 rounded border border-zinc-700">
-                  <Select.ScrollUpButton />
-                  <Select.Viewport className="p-5">
-                    <Select.Item
-                      key="-1"
-                      value=""
-                      className="text-sm text-zinc-500 rounded flex items-center h-6 px-8 relative select-none"
-                      disabled
-                    >
-                      <Select.ItemText>
-                        Selecione o game que deseja jogar
-                      </Select.ItemText>
-                      <Select.ItemIndicator className="absolute left-0 w-5 inline-flex items-center justify-center">
-                        <Check />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                    {games.map((game) => (
-                      <Select.Item
-                        key={game.id}
-                        value={game.id}
-                        className="text-sm text-white rounded flex items-center h-6 px-8 my-1 relative select-none cursor-pointer hover:text-violet-200 hover:bg-violet-500"
-                      >
-                        <Select.ItemText>{game.title}</Select.ItemText>
-                        <Select.ItemIndicator className="absolute left-0 w-5 inline-flex items-center justify-center">
-                          <Check className="text-violet-500" />
-                        </Select.ItemIndicator>
-                      </Select.Item>
-                    ))}
-                  </Select.Viewport>
-                  <Select.ScrollDownButton />
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
+            <Select name="name" control={control} label="Qual o game?">
+              <Select.Group>
+                <Select.GroupLabel>Games</Select.GroupLabel>
+                {games.map((game) => (
+                  <Select.Item
+                    key={game.id}
+                    value={game.id}
+                    text={game.title}
+                  />
+                ))}
+              </Select.Group>
+            </Select>
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Seu nome (ou nickname)</label>
@@ -223,22 +218,7 @@ export function CreateAdModal() {
             </div>
           </div>
           <label className="mt-2 flex items-center gap-2 text-sm">
-            <Checkbox.Root
-              id="useVoiceChannel"
-              checked={useVoiceChannel}
-              onCheckedChange={(checked) => {
-                if (checked === true) {
-                  setUseVoiceChannel(true);
-                } else {
-                  setUseVoiceChannel(false);
-                }
-              }}
-              className="w-6 h-6 p-1 rounded bg-zinc-900"
-            >
-              <Checkbox.Indicator>
-                <Check className="w-4 h-4 text-emerald-400" />
-              </Checkbox.Indicator>
-            </Checkbox.Root>
+            <Checkbox name="useVoiceChannel" control={control} />
             Costumo me conectar ao chat de voz.
           </label>
           <footer className="mt-2 flex gap-4 justify-end">
