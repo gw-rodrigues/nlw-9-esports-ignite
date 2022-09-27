@@ -1,6 +1,6 @@
 import axios from "axios";
-import { FormEvent, useEffect, useState } from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 
@@ -8,7 +8,12 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { Input } from "./Form/Input";
 import { Game } from "../App";
 import { Checkbox } from "./Form/Checkbox";
-import { Select } from "./Form/Select";
+import {
+  Select,
+  SelectGroup,
+  SelectGroupLabel,
+  SelectItem,
+} from "./Form/Select";
 
 interface GameFormProps {
   name: string;
@@ -81,20 +86,23 @@ export function CreateAdModal() {
         >
           <div className="flex flex-col gap-2">
             <label htmlFor="game">Qual o game?</label>
-
-            <Select name="name" control={control} label="Qual o game?">
-              <Select.Group>
-                <Select.GroupLabel>Games</Select.GroupLabel>
+            <Select
+              id="game"
+              name="game"
+              control={control}
+              label="Selecione o game que deseja jogar"
+            >
+              <SelectGroup>
+                <SelectGroupLabel>Games</SelectGroupLabel>
                 {games.map((game) => (
-                  <Select.Item
-                    key={game.id}
-                    value={game.id}
-                    text={game.title}
-                  />
+                  <SelectItem key={game.id} value={game.id}>
+                    {game.title}
+                  </SelectItem>
                 ))}
-              </Select.Group>
+              </SelectGroup>
             </Select>
           </div>
+
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Seu nome (ou nickname)</label>
             <Input
@@ -104,6 +112,7 @@ export function CreateAdModal() {
               placeholder="Como te chamam dentro do game?"
             />
           </div>
+
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
               <label htmlFor="yearsPlaying">Joga há quantos anos?</label>
@@ -124,6 +133,7 @@ export function CreateAdModal() {
               />
             </div>
           </div>
+
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
               <label htmlFor="weekDays">Quando costuma jogar?</label>
@@ -217,10 +227,12 @@ export function CreateAdModal() {
               </div>
             </div>
           </div>
+
           <label className="mt-2 flex items-center gap-2 text-sm">
             <Checkbox name="useVoiceChannel" control={control} />
             Costumo me conectar ao chat de voz.
           </label>
+
           <footer className="mt-2 flex gap-4 justify-end">
             <Dialog.Close
               type="button"
