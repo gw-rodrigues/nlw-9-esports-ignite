@@ -4,7 +4,7 @@ import axios from "axios";
 import logoImg from "./assets/logo-nlw-esports.svg";
 import { GameBanner } from "./components/GamerBanner";
 import { CreateAdBanner } from "./components/CreateAdBanner";
-import { CreateAdModal } from "./components/createAdModal";
+import { CreateAdModal } from "./components/CreateAdModal";
 
 import { SpinnerGap } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
