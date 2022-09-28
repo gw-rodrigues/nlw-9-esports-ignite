@@ -83,7 +83,7 @@ export function CreateAdModal() {
         </Dialog.Title>
         <form
           onSubmit={handleSubmit((data) => console.log(data))}
-          className="flex flex-col gap-4 mt-8"
+          className="flex flex-col gap-8 mt-8"
         >
           <div className="flex flex-col gap-2">
             <label htmlFor="game">Qual o game?</label>
@@ -224,23 +224,33 @@ export function CreateAdModal() {
                 </ToggleGroup.Item>
               </ToggleGroup.Root>
             </div>
+
             <div className="flex flex-col gap-2 flex-1">
               <label htmlFor="hourStart">Qual horário do dia?</label>
-              <div className="grid grid-cols-2 gap-2">
+
+              <div className="flex gap-2 items-center justify-end">
+                <label htmlFor="hourStart" className="text-sm">
+                  De:
+                </label>
                 <Input
                   id="hourStart"
                   name="hourStart"
                   control={control}
-                  rules={{ required: "coloque seu nome" }}
+                  rules={{ required: true }}
                   invalid={errors.hourStart}
                   type="time"
                   placeholder="De"
                 />
+              </div>
+              <div className="flex gap-2 items-center justify-end">
+                <label htmlFor="hourEnd" className="text-sm">
+                  Até:
+                </label>
                 <Input
                   id="hourEnd"
                   name="hourEnd"
                   control={control}
-                  rules={{ required: "coloque seu nome" }}
+                  rules={{ required: true }}
                   invalid={errors.hourEnd}
                   type="time"
                   placeholder="Até"

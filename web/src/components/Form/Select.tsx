@@ -16,11 +16,11 @@ interface SelectProps {
 
 export const Select = ({ children, label, invalid, ...rest }: SelectProps) => {
   return (
-    <>
+    <div className="flex flex-col gap-1">
       {invalid && (
         <div className="flex items-center gap-2 text-xs text-red-400">
           <Warning />
-          {invalid.message ? invalid.message : 'Obrigatório.'}
+          {invalid.message ? invalid.message : "Obrigatório."}
         </div>
       )}
       <Controller
@@ -61,7 +61,7 @@ export const Select = ({ children, label, invalid, ...rest }: SelectProps) => {
           </SelectPrimitive.Root>
         )}
       />
-    </>
+    </div>
   );
 };
 

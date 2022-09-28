@@ -13,9 +13,9 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export function Input({ name, control, rules, invalid, ...rest }: InputProps) {
   return (
-    <>
+    <div className="flex flex-col gap-4 relative mt-2">
       {invalid && (
-        <div className="flex items-center gap-2 text-xs text-red-400">
+        <div className="flex items-center gap-2 text-xs text-red-400 absolute top-[-16px] right-0 ">
           <Warning />
           {invalid.message ? invalid.message : "Obrigatório."}
         </div>
@@ -34,6 +34,6 @@ export function Input({ name, control, rules, invalid, ...rest }: InputProps) {
           />
         )}
       />
-    </>
+    </div>
   );
 }

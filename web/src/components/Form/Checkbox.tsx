@@ -11,7 +11,7 @@ interface CheckBoxProps {
 
 export const Checkbox = ({ invalid, ...rest }: CheckBoxProps) => {
   return (
-    <>
+    <div className="flex flex-col gap-1">
       {invalid && (
         <div className="flex items-center gap-2 text-xs text-red-400">
           <Warning />
@@ -36,6 +36,6 @@ export const Checkbox = ({ invalid, ...rest }: CheckBoxProps) => {
           </CheckboxRadix.Root>
         )}
       />
-    </>
+    </div>
   );
 };
