@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -16,6 +16,7 @@ import {
 } from "./Form/Select";
 
 interface GameFormProps {
+  game: string;
   name: string;
   yearsPlaying: number;
   discord: string;
@@ -37,6 +38,7 @@ export function CreateAdModal() {
   }, []);
 
   const {
+    register,
     control,
     formState: { errors },
     handleSubmit,
@@ -79,18 +81,21 @@ export function CreateAdModal() {
         <Dialog.Title className="text-3xl font-black">
           Publique um anúncio
         </Dialog.Title>
-
         <form
           onSubmit={handleSubmit((data) => console.log(data))}
           className="flex flex-col gap-4 mt-8"
         >
           <div className="flex flex-col gap-2">
             <label htmlFor="game">Qual o game?</label>
+
             <Select
               id="game"
               name="game"
               control={control}
               label="Selecione o game que deseja jogar"
+              rules={{ required: "selecione um jogo" }}
+              aria-invalid={errors.game ? "true" : "false"}
+              invalid={errors.game}
             >
               <SelectGroup>
                 <SelectGroupLabel>Games</SelectGroupLabel>
@@ -108,8 +113,11 @@ export function CreateAdModal() {
             <Input
               id="name"
               name="name"
+              control={control}
+              rules={{ required: "coloque seu nome" }}
               type="text"
               placeholder="Como te chamam dentro do game?"
+              invalid={errors.name}
             />
           </div>
 
@@ -119,6 +127,9 @@ export function CreateAdModal() {
               <Input
                 id="yearsPlaying"
                 name="yearsPlaying"
+                control={control}
+                rules={{ required: "coloque seu nome" }}
+                invalid={errors.yearsPlaying}
                 type="number"
                 placeholder="Tudo bem ser ZERO"
               />
@@ -128,6 +139,9 @@ export function CreateAdModal() {
               <Input
                 id="discord"
                 name="discord"
+                control={control}
+                rules={{ required: "coloque seu nome" }}
+                invalid={errors.discord}
                 type="text"
                 placeholder="Usuario#0000"
               />
@@ -137,6 +151,7 @@ export function CreateAdModal() {
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
               <label htmlFor="weekDays">Quando costuma jogar?</label>
+
               <ToggleGroup.Root
                 id="weekDays"
                 type="multiple"
@@ -215,12 +230,18 @@ export function CreateAdModal() {
                 <Input
                   id="hourStart"
                   name="hourStart"
+                  control={control}
+                  rules={{ required: "coloque seu nome" }}
+                  invalid={errors.hourStart}
                   type="time"
                   placeholder="De"
                 />
                 <Input
                   id="hourEnd"
                   name="hourEnd"
+                  control={control}
+                  rules={{ required: "coloque seu nome" }}
+                  invalid={errors.hourEnd}
                   type="time"
                   placeholder="Até"
                 />
