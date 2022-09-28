@@ -20,12 +20,13 @@ export const Checkbox = ({ invalid, ...rest }: CheckBoxProps) => {
       )}
       <Controller
         {...rest}
-        render={({ field }) => (
+        render={({ field: { name, value, ref, onChange, onBlur } }) => (
           <CheckboxRadix.Root
-            {...field}
             value={undefined}
-            checked={field.value}
-            onCheckedChange={field.onChange}
+            checked={value}
+            onCheckedChange={onChange}
+            ref={ref}
+            onBlur={onBlur}
             className={`w-6 h-6 p-1 rounded bg-zinc-900 ${
               invalid && "border border-red-400"
             }`}

@@ -25,14 +25,15 @@ export const Select = ({ children, label, invalid, ...rest }: SelectProps) => {
       )}
       <Controller
         {...rest}
-        render={({ field }) => (
+        render={({ field: { name, value, ref, onChange, onBlur } }) => (
           <SelectPrimitive.Root
-            {...field}
-            name={field.name}
-            value={field.value}
-            onValueChange={field.onChange}
+            name={name}
+            value={value}
+            onValueChange={onChange}
           >
             <SelectPrimitive.Trigger
+              onBlur={onBlur}
+              ref={ref}
               className={`bg-zinc-900 py-3 px-4 rounded  text-sm text-left placeholder:text-zinc-500 flex justify-between items-center ${
                 invalid && "border border-red-400"
               }`}

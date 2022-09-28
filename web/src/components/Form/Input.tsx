@@ -24,9 +24,12 @@ export function Input({ name, control, rules, invalid, ...rest }: InputProps) {
         name={name}
         control={control}
         rules={rules}
-        render={({ field }) => (
+        render={({ field: { name, value, ref, onChange, onBlur } }) => (
           <input
-            {...field}
+            name={name}
+            onChange={onChange}
+            ref={ref}
+            onBlur={onBlur}
             {...rest}
             className={`bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 ${
               invalid && "border border-red-400"
