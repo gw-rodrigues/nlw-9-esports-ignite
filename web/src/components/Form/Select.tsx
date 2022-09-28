@@ -1,7 +1,7 @@
-import { forwardRef, ReactNode } from "react";
-import { Check, ArrowDown, ArrowUp } from "phosphor-react";
+import React, { forwardRef, ReactNode } from "react";
+import { Check, ArrowDown, ArrowUp, Warning } from "phosphor-react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Controller, FieldValues } from "react-hook-form";
+import { Controller, FieldError, FieldValues } from "react-hook-form";
 
 interface SelectProps {
   defaultValue?: string | undefined;
@@ -10,21 +10,32 @@ interface SelectProps {
   label?: string;
   control: FieldValues | any;
   children: ReactNode;
+  rules?: Object;
+  invalid: FieldError | undefined;
 }
 
-export const Select = forwardRef<HTMLButtonElement, SelectProps>(
-  ({ children, label, ...rest }: SelectProps, forwardedRef) => {
-    return (
+export const Select = ({ children, label, invalid, ...rest }: SelectProps) => {
+  return (
+    <>
+      {invalid && (
+        <div className="flex items-center gap-2 text-xs text-red-400">
+          <Warning />
+          {invalid.message ? invalid.message : 'Obrigatório.'}
+        </div>
+      )}
       <Controller
         {...rest}
         render={({ field }) => (
           <SelectPrimitive.Root
+            {...field}
+            name={field.name}
             value={field.value}
             onValueChange={field.onChange}
           >
             <SelectPrimitive.Trigger
-              ref={forwardedRef}
-              className="bg-zinc-900 py-3 px-4 rounded text-sm text-left placeholder:text-zinc-500 flex justify-between items-center"
+              className={`bg-zinc-900 py-3 px-4 rounded  text-sm text-left placeholder:text-zinc-500 flex justify-between items-center ${
+                invalid && "border border-red-400"
+              }`}
             >
               <SelectPrimitive.Value placeholder={label} />
               <SelectPrimitive.Icon>
@@ -50,43 +61,42 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           </SelectPrimitive.Root>
         )}
       />
-    );
-  }
-);
+    </>
+  );
+};
 
 interface SelectItemProps {
   value: string;
   children: ReactNode;
 }
 
-export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
-  ({ children, ...props }: SelectItemProps, forwardedRef) => {
-    return (
-      <SelectPrimitive.Item
-        {...props}
-        ref={forwardedRef}
-        className="text-sm text-white rounded flex items-center h-6 px-8 my-1 relative select-none cursor-pointer hover:text-violet-200 hover:bg-violet-500"
-      >
-        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-        <SelectPrimitive.ItemIndicator className="absolute left-0 w-5 inline-flex items-center justify-center">
-          <Check className="text-violet-500" />
-        </SelectPrimitive.ItemIndicator>
-      </SelectPrimitive.Item>
-    );
-  }
-);
+export const SelectItem = ({ children, ...props }: SelectItemProps) => {
+  return (
+    <SelectPrimitive.Item
+      {...props}
+      className="text-sm text-white rounded flex items-center h-6 px-8 my-1 relative select-none cursor-pointer hover:text-violet-200 hover:bg-violet-500"
+    >
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      <SelectPrimitive.ItemIndicator className="absolute left-0 w-5 inline-flex items-center justify-center">
+        <Check className="text-violet-500" />
+      </SelectPrimitive.ItemIndicator>
+    </SelectPrimitive.Item>
+  );
+};
 
-interface GroupLabelProps {
+interface GroupProps {
   children: ReactNode;
 }
-export const SelectGroup = ({ children }: GroupLabelProps) => (
-  <SelectPrimitive.Group className="pb-2">
-    {children}
-  </SelectPrimitive.Group>  
+export const SelectGroup = ({ children }: GroupProps) => (
+  <SelectPrimitive.Group className="pb-2">{children}</SelectPrimitive.Group>
 );
 
-export const SelectGroupLabel = ({ children }: GroupLabelProps) => (
+export const SelectGroupLabel = ({ children }: GroupProps) => (
   <SelectPrimitive.Label className=" text-sm text-zinc-400 flex items-center h-6 px-4 my-1 relative">
     {children}
   </SelectPrimitive.Label>
+);
+
+export const SelectGroupSeparator = () => (
+  <SelectPrimitive.Separator className="pb-2 border-t border-zinc-800" />
 );
