@@ -23,10 +23,17 @@ export interface Game {
 
 function App() {
   const [games, setGames] = useState<Game[]>([]);
+  const [sliderCreated, setSliderCreated] = useState(false);
 
   useEffect(() => {
     axios("http://localhost:3333/games").then((response) => {
-      setGames(response.data);
+      /**
+       * Timeout used only for presentation purpose
+       */
+      setTimeout(() => {
+        setGames(response.data);
+        setSliderCreated(true);
+      }, 500);
     });
   }, []);
 
@@ -38,6 +45,7 @@ function App() {
       perView: 6,
       spacing: 15,
     },
+    created() {},
   });
 
   return (
@@ -52,16 +60,19 @@ function App() {
         está aqui.
       </h1>
 
-      <div className="keen-slider  mt-16" ref={sliderRef}>
-        {games.length > 0 ? (
-          games.map((game) => (
-            <GameBanner
-              key={game.id}
-              bannerUrl={game.bannerUrl}
-              title={game.title}
-              adsCount={game._count.ads}
-            />
-          ))
+      <div className="keen-slider mt-16" ref={sliderRef}>
+        {sliderCreated ? (
+          games.map((game, index) => {
+            return (
+              <GameBanner
+                key={game.id}
+                bannerUrl={game.bannerUrl}
+                title={game.title}
+                adsCount={game._count.ads}
+                animationDelay={index}
+              />
+            );
+          })
         ) : (
           <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
         )}
