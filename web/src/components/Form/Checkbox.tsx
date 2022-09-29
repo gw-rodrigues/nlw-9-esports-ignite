@@ -7,9 +7,10 @@ interface CheckBoxProps {
   control: FieldValues | any;
   rules?: Object;
   invalid?: FieldError | undefined;
+  defaultValue?: string | undefined;
 }
 
-export const Checkbox = ({ invalid, ...rest }: CheckBoxProps) => {
+export const Checkbox = ({ invalid, defaultValue, ...rest }: CheckBoxProps) => {
   return (
     <div className="flex flex-col gap-1">
       {invalid && (
@@ -20,9 +21,10 @@ export const Checkbox = ({ invalid, ...rest }: CheckBoxProps) => {
       )}
       <Controller
         {...rest}
+        defaultValue={defaultValue ? defaultValue : false}
         render={({ field: { name, value, ref, onChange, onBlur } }) => (
           <CheckboxRadix.Root
-            value={undefined}
+            value={value}
             checked={value}
             onCheckedChange={onChange}
             ref={ref}
