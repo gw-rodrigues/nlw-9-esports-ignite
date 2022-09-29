@@ -31,7 +31,6 @@ export function Input({
         name={name}
         control={control}
         rules={rules}
-        defaultValue={defaultValue ? defaultValue : ""}
         render={({ field: { name, value, ref, onChange, onBlur } }) => (
           <input
             name={name}
