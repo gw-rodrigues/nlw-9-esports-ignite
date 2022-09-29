@@ -14,7 +14,13 @@ interface ToggleProps {
   invalid?: any;
 }
 
-export const Toggle = ({ children, label, invalid, ...rest }: ToggleProps) => {
+export const Toggle = ({
+  children,
+  defaultValue,
+  label,
+  invalid,
+  ...rest
+}: ToggleProps) => {
   return (
     <div className="flex flex-col gap-1">
       {invalid && (
@@ -25,6 +31,7 @@ export const Toggle = ({ children, label, invalid, ...rest }: ToggleProps) => {
       )}
       <Controller
         {...rest}
+        defaultValue={defaultValue ? defaultValue : []}
         render={({ field: { name, value, ref, onChange, onBlur } }) => {
           return (
             <TogglePrimitive.Root

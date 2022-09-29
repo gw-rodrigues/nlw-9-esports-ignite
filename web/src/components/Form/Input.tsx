@@ -11,7 +11,14 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   invalid: FieldError | undefined;
 }
 
-export function Input({ name, control, rules, invalid, ...rest }: InputProps) {
+export function Input({
+  name,
+  control,
+  defaultValue,
+  rules,
+  invalid,
+  ...rest
+}: InputProps) {
   return (
     <div className="flex flex-col gap-4 relative mt-2">
       {invalid && (
@@ -24,15 +31,17 @@ export function Input({ name, control, rules, invalid, ...rest }: InputProps) {
         name={name}
         control={control}
         rules={rules}
+        defaultValue={defaultValue ? defaultValue : ""}
         render={({ field: { name, value, ref, onChange, onBlur } }) => (
           <input
             name={name}
             onChange={onChange}
             ref={ref}
             onBlur={onBlur}
+            defaultValue=""
             {...rest}
             className={`bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 ${
-              invalid && "border border-red-400"
+              invalid ? "border border-red-400" : ""
             }`}
           />
         )}
