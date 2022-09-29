@@ -38,29 +38,25 @@ export function CreateAdModal() {
     handleSubmit,
   } = useForm<GameFormProps>();
 
-  const onSubmit: SubmitHandler<GameFormProps> = (data) => {
-    console.log(data);
-  };
-
-  async function handleCreateAt(event: FormEvent) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
-
-    if (!data?.name) {
-      return;
-    }
-
+  async function handleCreateAt({
+    game,
+    name,
+    yearsPlaying,
+    discord,
+    weekDays,
+    hourEnd,
+    hourStart,
+    useVoiceChannel,
+  }: GameFormProps) {
     try {
-      axios.post(`http://localhost:3333/games/${data.game}/ads`, {
-        name: data.name,
-        yearsPlaying: Number(data.yearsPlaying),
-        discord: data.discord,
+      axios.post(`http://localhost:3333/games/${game}/ads`, {
+        name,
+        yearsPlaying: Number(yearsPlaying),
+        discord,
         weekDays: weekDays.map(Number),
-        hourEnd: data.hourEnd,
-        hourStart: data.hourStart,
-        useVoiceChannel: useVoiceChannel,
+        hourEnd,
+        hourStart,
+        useVoiceChannel,
       });
       alert("Anúncio criado com sucesso!");
     } catch (error) {
@@ -76,7 +72,7 @@ export function CreateAdModal() {
           Publique um anúncio
         </Dialog.Title>
         <form
-          onSubmit={handleSubmit((data) => console.log(data))}
+          onSubmit={handleSubmit(handleCreateAt)}
           className="flex flex-col gap-8 mt-8"
         >
           <div className="flex flex-col gap-2">
