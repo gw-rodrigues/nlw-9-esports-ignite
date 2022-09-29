@@ -89,6 +89,9 @@ export function CreateAdModal() {
         useVoiceChannel,
       });
 
+      /**
+       * Timeout used only for presentation
+       */
       setTimeout(() => {
         setIsSubmitting(false);
         setIsSubmitted(true);
