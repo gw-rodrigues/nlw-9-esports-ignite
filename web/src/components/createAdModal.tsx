@@ -87,7 +87,7 @@ export function CreateAdModal() {
               name="game"
               control={control}
               label="Selecione o game que deseja jogar"
-              rules={{ required: "selecione um jogo" }}
+              rules={{ required: "selecione um jogo." }}
               invalid={errors.game}
             >
               {games.map((game) => (
@@ -104,7 +104,7 @@ export function CreateAdModal() {
               id="name"
               name="name"
               control={control}
-              rules={{ required: "coloque seu nome" }}
+              rules={{ required: "coloque seu nome ou nickname." }}
               type="text"
               placeholder="Como te chamam dentro do game?"
               invalid={errors.name}
@@ -118,7 +118,7 @@ export function CreateAdModal() {
                 id="yearsPlaying"
                 name="yearsPlaying"
                 control={control}
-                rules={{ required: "coloque seu nome" }}
+                rules={{ required: true }}
                 invalid={errors.yearsPlaying}
                 type="number"
                 placeholder="Tudo bem ser ZERO"
@@ -130,7 +130,7 @@ export function CreateAdModal() {
                 id="discord"
                 name="discord"
                 control={control}
-                rules={{ required: "coloque seu nome" }}
+                rules={{ required: "coloque seu discord." }}
                 invalid={errors.discord}
                 type="text"
                 placeholder="Usuario#0000"
@@ -138,67 +138,65 @@ export function CreateAdModal() {
             </div>
           </div>
 
-          
-            <div className="flex flex-col gap-3">
-              <label htmlFor="weekDays">Quais dias costumas jogar?</label>
-                
-              <Toggle id="weekDays" name="weekDays" control={control}>
-                <ToggleItem value="0" title="Domingo">
-                  D
-                </ToggleItem>
-                <ToggleItem value="1" title="Segunda">
-                  S
-                </ToggleItem>
-                <ToggleItem value="2" title="Terça">
-                  T
-                </ToggleItem>
-                <ToggleItem value="3" title="Quarta">
-                  Q
-                </ToggleItem>
-                <ToggleItem value="4" title="Quinta">
-                  Q
-                </ToggleItem>
-                <ToggleItem value="5" title="Sexta">
-                  S
-                </ToggleItem>
-                <ToggleItem value="6" title="Sábado">
-                  S
-                </ToggleItem>
-              </Toggle>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="weekDays">Quais dias costumas jogar?</label>
+
+            <Toggle id="weekDays" name="weekDays" control={control}>
+              <ToggleItem value="0" title="Domingo">
+                D
+              </ToggleItem>
+              <ToggleItem value="1" title="Segunda">
+                S
+              </ToggleItem>
+              <ToggleItem value="2" title="Terça">
+                T
+              </ToggleItem>
+              <ToggleItem value="3" title="Quarta">
+                Q
+              </ToggleItem>
+              <ToggleItem value="4" title="Quinta">
+                Q
+              </ToggleItem>
+              <ToggleItem value="5" title="Sexta">
+                S
+              </ToggleItem>
+              <ToggleItem value="6" title="Sábado">
+                S
+              </ToggleItem>
+            </Toggle>
+          </div>
+
+          <div className="flex flex-col gap-4 flex-1">
+            <label htmlFor="hourStart">Qual horário do dia?</label>
+
+            <div className="flex gap-2 items-center justify-between">
+              <label htmlFor="hourStart" className="text-sm">
+                De:
+              </label>
+              <Input
+                id="hourStart"
+                name="hourStart"
+                control={control}
+                rules={{ required: true }}
+                invalid={errors.hourStart}
+                type="time"
+                placeholder="De"
+              />
+
+              <label htmlFor="hourEnd" className="text-sm">
+                Até:
+              </label>
+              <Input
+                id="hourEnd"
+                name="hourEnd"
+                control={control}
+                rules={{ required: true }}
+                invalid={errors.hourEnd}
+                type="time"
+                placeholder="Até"
+              />
             </div>
-
-            <div className="flex flex-col gap-4 flex-1">
-              <label htmlFor="hourStart">Qual horário do dia?</label>
-
-              <div className="flex gap-2 items-center justify-between">
-                <label htmlFor="hourStart" className="text-sm">
-                  De:
-                </label>
-                <Input
-                  id="hourStart"
-                  name="hourStart"
-                  control={control}
-                  rules={{ required: true }}
-                  invalid={errors.hourStart}
-                  type="time"
-                  placeholder="De"
-                />
-
-                <label htmlFor="hourEnd" className="text-sm">
-                  Até:
-                </label>
-                <Input
-                  id="hourEnd"
-                  name="hourEnd"
-                  control={control}
-                  rules={{ required: true }}
-                  invalid={errors.hourEnd}
-                  type="time"
-                  placeholder="Até"
-                />
-              </div>
-            </div>
-          
+          </div>
 
           <label className="mt-2 flex items-center gap-2 text-sm">
             <Checkbox name="useVoiceChannel" control={control} />
