@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Warning } from "phosphor-react";
 import * as TogglePrimitive from "@radix-ui/react-toggle-group";
-import { Controller, FieldError, FieldValues } from "react-hook-form";
+import { Controller, FieldError, FieldValues, Merge } from "react-hook-form";
 
 interface ToggleProps {
   defaultValue?: string | undefined;
@@ -11,7 +11,7 @@ interface ToggleProps {
   control: FieldValues | any;
   children: ReactNode;
   rules?: Object;
-  invalid?: FieldError | undefined;
+  invalid?: any;
 }
 
 export const Toggle = ({ children, label, invalid, ...rest }: ToggleProps) => {

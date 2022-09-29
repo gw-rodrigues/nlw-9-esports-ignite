@@ -27,13 +27,18 @@ const regex = "^[a-zA-Z]+#.*$";
 const schema = z.object({
   game: z.string().min(1, { message: "Selecione um jogo." }),
   name: z
-    .string({ required_error: "Coloque um nome ou nickname." })
-    .min(3, { message: "Nome ou nickname pelo 3 carácteres." }),
+    .string({ required_error: "Coloque seu nome / nickname." })
+    .min(3, { message: "Nome / nickname min 3 carácteres." }),
   yearsPlaying: z.string({ required_error: "Obrigatório." }),
-  discord: z.string({ required_error: "Coloque seu discord." }).regex(RegExp(".+#d{4}")),
-  weekDays: z.string(),
-  hourEnd: z.date({ required_error: "Obrigatório." }),
-  hourStart: z.date({ required_error: "Obrigatório." }),
+  discord: z
+    .string({ required_error: "Coloque seu discord." })
+    .min(8, { message: "Discord min 7 carácteres." })
+    .regex(RegExp("^[a-zA-Z]+#[0-9][0-9][0-9][0-9]$"), {
+      message: "Discord está inválido.",
+    }),
+  weekDays: z.array(z.string()).min(1),
+  hourEnd: z.string(),
+  hourStart: z.string(),
   useVoiceChannel: z.boolean(),
 });
 
@@ -64,6 +69,8 @@ export function CreateAdModal() {
     hourStart,
     useVoiceChannel,
   }: GameFormProps) {
+    console.log(hourEnd, hourStart, weekDays ? weekDays.map(Number) : -1);
+    return;
     try {
       axios.post(`http://localhost:3333/games/${game}/ads`, {
         name,
@@ -128,9 +135,9 @@ export function CreateAdModal() {
                 id="yearsPlaying"
                 name="yearsPlaying"
                 control={control}
-                rules={{ required: true }}
                 invalid={errors.yearsPlaying}
                 type="number"
+                min="0"
                 placeholder="Tudo bem ser ZERO"
               />
             </div>
@@ -140,10 +147,9 @@ export function CreateAdModal() {
                 id="discord"
                 name="discord"
                 control={control}
-                rules={{ required: "coloque seu discord." }}
                 invalid={errors.discord}
                 type="text"
-                placeholder="Usuario#0000"
+                placeholder="Usuário#0000"
               />
             </div>
           </div>
@@ -151,7 +157,12 @@ export function CreateAdModal() {
           <div className="flex flex-col gap-3">
             <label htmlFor="weekDays">Quais dias costumas jogar?</label>
 
-            <Toggle id="weekDays" name="weekDays" control={control}>
+            <Toggle
+              id="weekDays"
+              name="weekDays"
+              control={control}
+              invalid={errors.weekDays}
+            >
               <ToggleItem value="0" title="Domingo">
                 D
               </ToggleItem>
@@ -187,7 +198,6 @@ export function CreateAdModal() {
                 id="hourStart"
                 name="hourStart"
                 control={control}
-                rules={{ required: true }}
                 invalid={errors.hourStart}
                 type="time"
                 placeholder="De"
@@ -200,7 +210,6 @@ export function CreateAdModal() {
                 id="hourEnd"
                 name="hourEnd"
                 control={control}
-                rules={{ required: true }}
                 invalid={errors.hourEnd}
                 type="time"
                 placeholder="Até"

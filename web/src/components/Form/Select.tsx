@@ -10,7 +10,7 @@ interface SelectProps {
   control: FieldValues | any;
   children: ReactNode;
   rules?: Object;
-  invalid: FieldError | undefined;
+  invalid?: FieldError | undefined;
 }
 
 export const Select = ({
