@@ -4,16 +4,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 
-import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { Input } from "./Form/Input";
 import { Game } from "../App";
 import { Checkbox } from "./Form/Checkbox";
-import {
-  Select,
-  SelectGroup,
-  SelectGroupLabel,
-  SelectItem,
-} from "./Form/Select";
+import { Select, SelectItem } from "./Form/Select";
+import { Toggle, ToggleItem } from "./Form/Toggle";
 
 interface GameFormProps {
   game: string;
@@ -38,7 +33,6 @@ export function CreateAdModal() {
   }, []);
 
   const {
-    register,
     control,
     formState: { errors },
     handleSubmit,
@@ -94,17 +88,13 @@ export function CreateAdModal() {
               control={control}
               label="Selecione o game que deseja jogar"
               rules={{ required: "selecione um jogo" }}
-              aria-invalid={errors.game ? "true" : "false"}
               invalid={errors.game}
             >
-              <SelectGroup>
-                <SelectGroupLabel>Games</SelectGroupLabel>
-                {games.map((game) => (
-                  <SelectItem key={game.id} value={game.id}>
-                    {game.title}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+              {games.map((game) => (
+                <SelectItem key={game.id} value={game.id}>
+                  {game.title}
+                </SelectItem>
+              ))}
             </Select>
           </div>
 
@@ -152,77 +142,29 @@ export function CreateAdModal() {
             <div className="flex flex-col gap-2">
               <label htmlFor="weekDays">Quando costuma jogar?</label>
 
-              <ToggleGroup.Root
-                id="weekDays"
-                type="multiple"
-                className="grid grid-cols-4 gap-1"
-                value={weekDays}
-                onValueChange={setWeekDays}
-              >
-                <ToggleGroup.Item
-                  value="0"
-                  title="Domingo"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("0") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+              <Toggle id="weekDays" name="weekDays" control={control}>
+                <ToggleItem value="0" title="Domingo">
                   D
-                </ToggleGroup.Item>
-                <ToggleGroup.Item
-                  value="1"
-                  title="Segunda"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("1") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+                </ToggleItem>
+                <ToggleItem value="1" title="Segunda">
                   S
-                </ToggleGroup.Item>
-                <ToggleGroup.Item
-                  value="2"
-                  title="Terça"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("2") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+                </ToggleItem>
+                <ToggleItem value="2" title="Terça">
                   T
-                </ToggleGroup.Item>
-                <ToggleGroup.Item
-                  value="3"
-                  title="Quarta"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("3") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+                </ToggleItem>
+                <ToggleItem value="3" title="Quarta">
                   Q
-                </ToggleGroup.Item>
-                <ToggleGroup.Item
-                  value="4"
-                  title="Quinta"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("4") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+                </ToggleItem>
+                <ToggleItem value="4" title="Quinta">
                   Q
-                </ToggleGroup.Item>
-                <ToggleGroup.Item
-                  value="5"
-                  title="Sexta"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("5") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+                </ToggleItem>
+                <ToggleItem value="5" title="Sexta">
                   S
-                </ToggleGroup.Item>
-                <ToggleGroup.Item
-                  value="6"
-                  title="Sábado"
-                  className={`w-8 h-8 rounded  ${
-                    weekDays.includes("6") ? "bg-violet-500" : "bg-zinc-900"
-                  }`}
-                >
+                </ToggleItem>
+                <ToggleItem value="6" title="Sábado">
                   S
-                </ToggleGroup.Item>
-              </ToggleGroup.Root>
+                </ToggleItem>
+              </Toggle>
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
