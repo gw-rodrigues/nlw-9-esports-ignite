@@ -138,10 +138,10 @@ export function CreateAdModal() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="weekDays">Quando costuma jogar?</label>
-
+          
+            <div className="flex flex-col gap-3">
+              <label htmlFor="weekDays">Quais dias costumas jogar?</label>
+                
               <Toggle id="weekDays" name="weekDays" control={control}>
                 <ToggleItem value="0" title="Domingo">
                   D
@@ -167,10 +167,10 @@ export function CreateAdModal() {
               </Toggle>
             </div>
 
-            <div className="flex flex-col gap-2 flex-1">
+            <div className="flex flex-col gap-4 flex-1">
               <label htmlFor="hourStart">Qual horário do dia?</label>
 
-              <div className="flex gap-2 items-center justify-end">
+              <div className="flex gap-2 items-center justify-between">
                 <label htmlFor="hourStart" className="text-sm">
                   De:
                 </label>
@@ -183,8 +183,7 @@ export function CreateAdModal() {
                   type="time"
                   placeholder="De"
                 />
-              </div>
-              <div className="flex gap-2 items-center justify-end">
+
                 <label htmlFor="hourEnd" className="text-sm">
                   Até:
                 </label>
@@ -199,7 +198,7 @@ export function CreateAdModal() {
                 />
               </div>
             </div>
-          </div>
+          
 
           <label className="mt-2 flex items-center gap-2 text-sm">
             <Checkbox name="useVoiceChannel" control={control} />
