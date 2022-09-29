@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* This won't be included in your compiled CSS unless you actually use it */
+  button[data-state="on"] {
+    background-color: rgb(139 92 246 / var(--tw-bg-opacity));
+    transition: background-color 0.5s;
+  }
+}
