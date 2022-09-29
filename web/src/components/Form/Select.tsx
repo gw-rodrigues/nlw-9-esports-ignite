@@ -21,9 +21,9 @@ export const Select = ({
   ...rest
 }: SelectProps) => {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 relative mt-2">
       {invalid && (
-        <div className="flex items-center gap-2 text-xs text-red-400">
+        <div className="flex items-center gap-2 text-xs text-red-400 absolute top-[-16px] right-0 ">
           <Warning />
           {invalid.message ? invalid.message : "Obrigatório."}
         </div>
