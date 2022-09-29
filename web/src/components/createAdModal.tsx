@@ -1,8 +1,11 @@
 import axios from "axios";
-import { FormEvent, useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { GameController } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 import { Input } from "./Form/Input";
 import { Game } from "../App";
@@ -20,11 +23,22 @@ interface GameFormProps {
   hourStart: string;
   useVoiceChannel: boolean;
 }
+const regex = "^[a-zA-Z]+#.*$";
+const schema = z.object({
+  game: z.string().min(1, { message: "Selecione um jogo." }),
+  name: z
+    .string({ required_error: "Coloque um nome ou nickname." })
+    .min(3, { message: "Nome ou nickname pelo 3 carácteres." }),
+  yearsPlaying: z.string({ required_error: "Obrigatório." }),
+  discord: z.string({ required_error: "Coloque seu discord." }).regex(RegExp(".+#d{4}")),
+  weekDays: z.string(),
+  hourEnd: z.date({ required_error: "Obrigatório." }),
+  hourStart: z.date({ required_error: "Obrigatório." }),
+  useVoiceChannel: z.boolean(),
+});
 
 export function CreateAdModal() {
   const [games, setGames] = useState<Game[]>([]);
-  const [weekDays, setWeekDays] = useState<string[]>([]);
-  const [useVoiceChannel, setUseVoiceChannel] = useState(false);
 
   useEffect(() => {
     axios("http://localhost:3333/games").then((response) => {
@@ -36,7 +50,9 @@ export function CreateAdModal() {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<GameFormProps>();
+  } = useForm<GameFormProps>({
+    resolver: zodResolver(schema),
+  });
 
   async function handleCreateAt({
     game,
@@ -83,7 +99,6 @@ export function CreateAdModal() {
               name="game"
               control={control}
               label="Selecione o game que deseja jogar"
-              rules={{ required: "selecione um jogo." }}
               invalid={errors.game}
             >
               {games.map((game) => (
@@ -100,7 +115,6 @@ export function CreateAdModal() {
               id="name"
               name="name"
               control={control}
-              rules={{ required: "coloque seu nome ou nickname." }}
               type="text"
               placeholder="Como te chamam dentro do game?"
               invalid={errors.name}
