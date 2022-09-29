@@ -12,6 +12,8 @@ import { Game } from "../App";
 import { Checkbox } from "./Form/Checkbox";
 import { Select, SelectItem } from "./Form/Select";
 import { Toggle, ToggleItem } from "./Form/Toggle";
+import { CreateAdModalSubmitted } from "./CreateAdModalSubmitted";
+import CreateAdModalSubmitting from "./CreateAdModalSubmitting";
 
 interface GameFormProps {
   game: string;
@@ -36,13 +38,18 @@ const schema = z.object({
     .regex(RegExp("^[a-zA-Z]+#[0-9][0-9][0-9][0-9]$"), {
       message: "Discord está inválido.",
     }),
-  weekDays: z.array(z.string()).min(1),
-  hourEnd: z.string(),
-  hourStart: z.string(),
+  weekDays: z
+    .array(z.string(), { required_error: "Selecione 1 ou vários dias." })
+    .min(1, { message: "Obrigatório selecionar 1 ou vários dias." }),
+  hourEnd: z.string({ required_error: "Obrigatório." }),
+  hourStart: z.string({ required_error: "Obrigatório." }),
   useVoiceChannel: z.boolean(),
 });
 
 export function CreateAdModal() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
@@ -55,6 +62,7 @@ export function CreateAdModal() {
     control,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<GameFormProps>({
     resolver: zodResolver(schema),
   });
@@ -69,176 +77,191 @@ export function CreateAdModal() {
     hourStart,
     useVoiceChannel,
   }: GameFormProps) {
-    console.log(hourEnd, hourStart, weekDays ? weekDays.map(Number) : -1);
-    return;
+    setIsSubmitting(true);
     try {
       axios.post(`http://localhost:3333/games/${game}/ads`, {
         name,
         yearsPlaying: Number(yearsPlaying),
         discord,
-        weekDays: weekDays.map(Number),
+        weekDays: weekDays ? weekDays.map(Number) : -1,
         hourEnd,
         hourStart,
         useVoiceChannel,
       });
-      alert("Anúncio criado com sucesso!");
+
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+      }, 2000);
     } catch (error) {
       alert("Error ao criar anúncio!");
     }
   }
 
+  function handleCloseDialog() {
+    reset();
+    setIsSubmitted(false);
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
-      <Dialog.Content className="fixed bg-[#2A2634] py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[480px]">
-        <Dialog.Title className="text-3xl font-black">
-          Publique um anúncio
-        </Dialog.Title>
-        <form
-          onSubmit={handleSubmit(handleCreateAt)}
-          className="flex flex-col gap-8 mt-8"
-        >
-          <div className="flex flex-col gap-2">
-            <label htmlFor="game">Qual o game?</label>
-
-            <Select
-              id="game"
-              name="game"
-              control={control}
-              label="Selecione o game que deseja jogar"
-              invalid={errors.game}
-            >
-              {games.map((game) => (
-                <SelectItem key={game.id} value={game.id}>
-                  {game.title}
-                </SelectItem>
-              ))}
-            </Select>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="name">Seu nome (ou nickname)</label>
-            <Input
-              id="name"
-              name="name"
-              control={control}
-              type="text"
-              placeholder="Como te chamam dentro do game?"
-              invalid={errors.name}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-6">
+      {!isSubmitting && !isSubmitted && (
+        <Dialog.Content className="fixed bg-[#2A2634] py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[480px]">
+          <Dialog.Title className="text-3xl font-black">
+            Publique um anúncio
+          </Dialog.Title>
+          <form
+            onSubmit={handleSubmit(handleCreateAt)}
+            className="flex flex-col gap-8 mt-8"
+          >
             <div className="flex flex-col gap-2">
-              <label htmlFor="yearsPlaying">Joga há quantos anos?</label>
-              <Input
-                id="yearsPlaying"
-                name="yearsPlaying"
+              <label htmlFor="game">Qual o game?</label>
+
+              <Select
+                id="game"
+                name="game"
                 control={control}
-                invalid={errors.yearsPlaying}
-                type="number"
-                min="0"
-                placeholder="Tudo bem ser ZERO"
-              />
+                label="Selecione o game que deseja jogar"
+                invalid={errors.game}
+              >
+                {games.map((game) => (
+                  <SelectItem key={game.id} value={game.id}>
+                    {game.title}
+                  </SelectItem>
+                ))}
+              </Select>
             </div>
+
             <div className="flex flex-col gap-2">
-              <label htmlFor="discord">Qual seu Discord?</label>
+              <label htmlFor="name">Seu nome (ou nickname)</label>
               <Input
-                id="discord"
-                name="discord"
+                id="name"
+                name="name"
                 control={control}
-                invalid={errors.discord}
                 type="text"
-                placeholder="Usuário#0000"
+                placeholder="Como te chamam dentro do game?"
+                invalid={errors.name}
               />
             </div>
-          </div>
 
-          <div className="flex flex-col gap-3">
-            <label htmlFor="weekDays">Quais dias costumas jogar?</label>
-
-            <Toggle
-              id="weekDays"
-              name="weekDays"
-              control={control}
-              invalid={errors.weekDays}
-            >
-              <ToggleItem value="0" title="Domingo">
-                D
-              </ToggleItem>
-              <ToggleItem value="1" title="Segunda">
-                S
-              </ToggleItem>
-              <ToggleItem value="2" title="Terça">
-                T
-              </ToggleItem>
-              <ToggleItem value="3" title="Quarta">
-                Q
-              </ToggleItem>
-              <ToggleItem value="4" title="Quinta">
-                Q
-              </ToggleItem>
-              <ToggleItem value="5" title="Sexta">
-                S
-              </ToggleItem>
-              <ToggleItem value="6" title="Sábado">
-                S
-              </ToggleItem>
-            </Toggle>
-          </div>
-
-          <div className="flex flex-col gap-4 flex-1">
-            <label htmlFor="hourStart">Qual horário do dia?</label>
-
-            <div className="flex gap-2 items-center justify-between">
-              <label htmlFor="hourStart" className="text-sm">
-                De:
-              </label>
-              <Input
-                id="hourStart"
-                name="hourStart"
-                control={control}
-                invalid={errors.hourStart}
-                type="time"
-                placeholder="De"
-              />
-
-              <label htmlFor="hourEnd" className="text-sm">
-                Até:
-              </label>
-              <Input
-                id="hourEnd"
-                name="hourEnd"
-                control={control}
-                invalid={errors.hourEnd}
-                type="time"
-                placeholder="Até"
-              />
+            <div className="grid grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="yearsPlaying">Joga há quantos anos?</label>
+                <Input
+                  id="yearsPlaying"
+                  name="yearsPlaying"
+                  control={control}
+                  invalid={errors.yearsPlaying}
+                  type="number"
+                  min="0"
+                  placeholder="Tudo bem ser ZERO"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="discord">Qual seu Discord?</label>
+                <Input
+                  id="discord"
+                  name="discord"
+                  control={control}
+                  invalid={errors.discord}
+                  type="text"
+                  placeholder="Usuário#0000"
+                />
+              </div>
             </div>
-          </div>
 
-          <label className="mt-2 flex items-center gap-2 text-sm">
-            <Checkbox name="useVoiceChannel" control={control} />
-            Costumo me conectar ao chat de voz.
-          </label>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="weekDays">Quais dias costumas jogar?</label>
 
-          <footer className="mt-2 flex gap-4 justify-end">
-            <Dialog.Close
-              type="button"
-              className="bg-zinc-500 px-5 h-12 rounded-md font-semibold hover:bg-zinc-600"
-            >
-              Cancelar
-            </Dialog.Close>
-            <button
-              type="submit"
-              className="bg-violet-500 px-5 h-12 rounded-md font-semibold flex items-center gap-3 hover:bg-violet-600"
-            >
-              <GameController size={24} className="w-6 h-6" />
-              Encontrar duo
-            </button>
-          </footer>
-        </form>
-      </Dialog.Content>
+              <Toggle
+                id="weekDays"
+                name="weekDays"
+                control={control}
+                invalid={errors.weekDays}
+              >
+                <ToggleItem value="0" title="Domingo">
+                  D
+                </ToggleItem>
+                <ToggleItem value="1" title="Segunda">
+                  S
+                </ToggleItem>
+                <ToggleItem value="2" title="Terça">
+                  T
+                </ToggleItem>
+                <ToggleItem value="3" title="Quarta">
+                  Q
+                </ToggleItem>
+                <ToggleItem value="4" title="Quinta">
+                  Q
+                </ToggleItem>
+                <ToggleItem value="5" title="Sexta">
+                  S
+                </ToggleItem>
+                <ToggleItem value="6" title="Sábado">
+                  S
+                </ToggleItem>
+              </Toggle>
+            </div>
+
+            <div className="flex flex-col gap-4 flex-1">
+              <label htmlFor="hourStart">Qual horário do dia?</label>
+
+              <div className="flex gap-2 items-center justify-between">
+                <label htmlFor="hourStart" className="text-sm">
+                  De:
+                </label>
+                <Input
+                  id="hourStart"
+                  name="hourStart"
+                  control={control}
+                  invalid={errors.hourStart}
+                  type="time"
+                  placeholder="De"
+                />
+
+                <label htmlFor="hourEnd" className="text-sm">
+                  Até:
+                </label>
+                <Input
+                  id="hourEnd"
+                  name="hourEnd"
+                  control={control}
+                  invalid={errors.hourEnd}
+                  type="time"
+                  placeholder="Até"
+                />
+              </div>
+            </div>
+
+            <label className="mt-2 flex items-center gap-2 text-sm">
+              <Checkbox name="useVoiceChannel" control={control} />
+              Costumo me conectar ao chat de voz.
+            </label>
+
+            <footer className="mt-2 flex gap-4 justify-end">
+              <Dialog.Close
+                type="button"
+                className="bg-zinc-500 px-5 h-12 rounded-md font-semibold hover:bg-zinc-600"
+                onClick={() => reset()}
+              >
+                Cancelar
+              </Dialog.Close>
+              <button
+                type="submit"
+                className="bg-violet-500 px-5 h-12 rounded-md font-semibold flex items-center gap-3 hover:bg-violet-600"
+              >
+                <GameController size={24} className="w-6 h-6" />
+                Encontrar duo
+              </button>
+            </footer>
+          </form>
+        </Dialog.Content>
+      )}
+      {isSubmitting && <CreateAdModalSubmitting />}
+      {isSubmitted && (
+        <CreateAdModalSubmitted handleCloseDialog={handleCloseDialog} />
+      )}
     </Dialog.Portal>
   );
 }
