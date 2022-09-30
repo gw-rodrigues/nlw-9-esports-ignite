@@ -15,7 +15,7 @@ import { Toggle, ToggleItem } from "./Form/Toggle";
 import { CreateAdModalSubmitted } from "./CreateAdModalSubmitted";
 import CreateAdModalSubmitting from "./CreateAdModalSubmitting";
 
-interface GameFormProps {
+interface GameAdsProps {
   game: string;
   name: string;
   yearsPlaying: number;
@@ -63,7 +63,7 @@ export function CreateAdModal() {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<GameFormProps>({
+  } = useForm<GameAdsProps>({
     resolver: zodResolver(schema),
   });
 
@@ -76,7 +76,7 @@ export function CreateAdModal() {
     hourEnd,
     hourStart,
     useVoiceChannel,
-  }: GameFormProps) {
+  }: GameAdsProps) {
     setIsSubmitting(true);
     try {
       axios.post(`http://localhost:3333/games/${game}/ads`, {
