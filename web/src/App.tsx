@@ -84,7 +84,7 @@ function App() {
 
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20">
-      <img src={logoImg} alt="logo" />
+      <img src={logoImg} alt="logo" className="animate-pulse" />
 
       <h1 className="text-6xl text-white font-black mt-20">
         Seu{" "}
@@ -113,10 +113,10 @@ function App() {
           <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
         )}
 
-        {sliderCreated && instanceRef.current && (
+        {sliderDataLoaded && sliderCreated && instanceRef.current && (
           <>
             <button
-              className="w-28 h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl bg-lr-gradient hover:bg-black/70"
+              className="delay 100 w-28 h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl bg-lr-gradient hover:bg-black/70"
               onClick={(e: any) =>
                 e.stopPropagation() || instanceRef.current?.prev()
               }
@@ -125,7 +125,7 @@ function App() {
             </button>
 
             <button
-              className="w-28 h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr bg-rl-gradient hover:bg-black/70"
+              className="delay-100 w-28 h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr bg-rl-gradient hover:bg-black/70"
               onClick={(e: any) =>
                 e.stopPropagation() || instanceRef.current?.prev()
               }
