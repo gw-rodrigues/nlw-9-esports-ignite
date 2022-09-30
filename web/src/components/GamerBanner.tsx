@@ -1,12 +1,19 @@
+import * as Dialog from "@radix-ui/react-dialog";
 interface GameBannerProps {
   bannerUrl: string;
   title: string;
   adsCount: number;
+  setGameAdsById: () => void;
 }
-export function GameBanner({ bannerUrl, title, adsCount }: GameBannerProps) {
+export function GameBanner({
+  bannerUrl,
+  title,
+  adsCount,
+  setGameAdsById,
+}: GameBannerProps) {
   return (
-    <a
-      href=""
+    <Dialog.Trigger
+      onClick={setGameAdsById}
       className="relative rounded-lg overflow-hidden keen-slider__slide animate-show hover:border border-violet-500 hover:saturate-200"
     >
       <img src={bannerUrl} alt="" />
@@ -16,6 +23,6 @@ export function GameBanner({ bannerUrl, title, adsCount }: GameBannerProps) {
           {adsCount} anúncios(s)
         </span>
       </div>
-    </a>
+    </Dialog.Trigger>
   );
 }
