@@ -11,6 +11,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./styles/main.css";
+import GetGameAdModal from "./components/GetGameAdModal";
 
 export interface Game {
   id: string;
@@ -23,9 +24,12 @@ export interface Game {
 
 function App() {
   const [games, setGames] = useState<Game[]>([]);
+
   const [sliderDataLoaded, setSliderDataLoaded] = useState(false);
   const [sliderCreated, setSliderCreated] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [gameAdsByID, setGameAdsByID] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     axios("http://localhost:3333/games").then((response) => {
@@ -82,6 +86,7 @@ function App() {
     ]
   );
 
+  console.log(gameAdsByID);
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20">
       <img src={logoImg} alt="logo" className="animate-pulse" />
@@ -94,52 +99,57 @@ function App() {
         está aqui.
       </h1>
 
-      <div
-        className="keen-slider mt-16 relative z-0 items-center"
-        ref={sliderRef}
-      >
-        {sliderDataLoaded ? (
-          games.map((game) => {
-            return (
-              <GameBanner
-                key={game.id}
-                bannerUrl={game.bannerUrl}
-                title={game.title}
-                adsCount={game._count.ads}
-              />
-            );
-          })
-        ) : (
-          <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
-        )}
+      <Dialog.Root>
+        <GetGameAdModal gameId={gameAdsByID} />
 
-        {sliderDataLoaded && sliderCreated && instanceRef.current && (
-          <>
-            <button
-              className="delay 100 w-28 h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl bg-lr-gradient hover:bg-black/70"
-              onClick={(e: any) =>
-                e.stopPropagation() || instanceRef.current?.prev()
-              }
-            >
-              <CaretLeft className="text-violet-500 w-20 h-20 mx-auto shadow" />
-            </button>
+        <div
+          className="keen-slider mt-16 relative z-0 items-center"
+          ref={sliderRef}
+        >
+          {sliderDataLoaded ? (
+            games.map((game) => {
+              return (
+                <GameBanner
+                  key={game.id}
+                  setGameAdsById={() => setGameAdsByID(game.id)}
+                  bannerUrl={game.bannerUrl}
+                  title={game.title}
+                  adsCount={game._count.ads}
+                />
+              );
+            })
+          ) : (
+            <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
+          )}
 
-            <button
-              className="delay-100 w-28 h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr bg-rl-gradient hover:bg-black/70"
-              onClick={(e: any) =>
-                e.stopPropagation() || instanceRef.current?.prev()
-              }
-            >
-              <CaretRight
-                className="text-violet-500 w-20 h-20 mx-auto shadow"
+          {sliderDataLoaded && sliderCreated && instanceRef.current && (
+            <>
+              <button
+                className="delay 100 w-28 h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl bg-lr-gradient hover:bg-black/70"
                 onClick={(e: any) =>
-                  e.stopPropagation() || instanceRef.current?.next()
+                  e.stopPropagation() || instanceRef.current?.prev()
                 }
-              />
-            </button>
-          </>
-        )}
-      </div>
+              >
+                <CaretLeft className="text-violet-500 w-20 h-20 mx-auto shadow" />
+              </button>
+
+              <button
+                className="delay-100 w-28 h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr bg-rl-gradient hover:bg-black/70"
+                onClick={(e: any) =>
+                  e.stopPropagation() || instanceRef.current?.prev()
+                }
+              >
+                <CaretRight
+                  className="text-violet-500 w-20 h-20 mx-auto shadow"
+                  onClick={(e: any) =>
+                    e.stopPropagation() || instanceRef.current?.next()
+                  }
+                />
+              </button>
+            </>
+          )}
+        </div>
+      </Dialog.Root>
 
       <Dialog.Root>
         <CreateAdBanner />
