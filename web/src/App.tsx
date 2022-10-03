@@ -24,12 +24,10 @@ export interface Game {
 
 function App() {
   const [games, setGames] = useState<Game[]>([]);
+  const [selectedGame, setSelectedGame] = useState<Game | undefined>();
 
   const [sliderDataLoaded, setSliderDataLoaded] = useState(false);
   const [sliderCreated, setSliderCreated] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const [gameAdsByID, setGameAdsByID] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     axios("http://localhost:3333/games").then((response) => {
@@ -86,7 +84,6 @@ function App() {
     ]
   );
 
-  console.log(gameAdsByID);
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20">
       <img src={logoImg} alt="logo" className="animate-pulse" />
@@ -99,8 +96,12 @@ function App() {
         está aqui.
       </h1>
 
-      <Dialog.Root>
-        <GetGameAdModal gameId={gameAdsByID} />
+      <Dialog.Root
+        onOpenChange={(open) => {
+          !open && setSelectedGame(undefined);
+        }}
+      >
+        {selectedGame && <GetGameAdModal game={selectedGame} />}
 
         <div className="w-[100%] mt-16 relative flex items-center justify-center">
           <div className="w-[90%] z-0">
@@ -110,10 +111,8 @@ function App() {
                   return (
                     <GameBanner
                       key={game.id}
-                      setGameAdsById={() => setGameAdsByID(game.id)}
-                      bannerUrl={game.bannerUrl}
-                      title={game.title}
-                      adsCount={game._count.ads}
+                      setSelectedGame={setSelectedGame}
+                      game={game}
                     />
                   );
                 })
