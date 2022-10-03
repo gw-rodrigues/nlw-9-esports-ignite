@@ -49,7 +49,7 @@ function App() {
       mode: "free",
       slides: {
         number: games.length,
-        perView: 6,
+        perView: 5,
         spacing: 15,
       },
     },
@@ -102,45 +102,45 @@ function App() {
       <Dialog.Root>
         <GetGameAdModal gameId={gameAdsByID} />
 
-        <div
-          className="keen-slider mt-16 relative z-0 items-center"
-          ref={sliderRef}
-        >
-          {sliderDataLoaded ? (
-            games.map((game) => {
-              return (
-                <GameBanner
-                  key={game.id}
-                  setGameAdsById={() => setGameAdsByID(game.id)}
-                  bannerUrl={game.bannerUrl}
-                  title={game.title}
-                  adsCount={game._count.ads}
-                />
-              );
-            })
-          ) : (
-            <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
-          )}
-
+        <div className="w-[100%] mt-16 relative flex items-center justify-center">
+          <div className="w-[90%] z-0">
+            <div className="keen-slider" ref={sliderRef}>
+              {sliderDataLoaded ? (
+                games.map((game) => {
+                  return (
+                    <GameBanner
+                      key={game.id}
+                      setGameAdsById={() => setGameAdsByID(game.id)}
+                      bannerUrl={game.bannerUrl}
+                      title={game.title}
+                      adsCount={game._count.ads}
+                    />
+                  );
+                })
+              ) : (
+                <SpinnerGap className="w-10 h-10 mx-auto my-8 animate-spin text-violet-500" />
+              )}
+            </div>
+          </div>
           {sliderDataLoaded && sliderCreated && instanceRef.current && (
             <>
               <button
-                className="delay 100 w-28 h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl bg-lr-gradient hover:bg-black/70"
+                className="delay 100 w-auto h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl text-left text-violet-900 hover:text-violet-500"
                 onClick={(e: any) =>
                   e.stopPropagation() || instanceRef.current?.prev()
                 }
               >
-                <CaretLeft className="text-violet-500 w-20 h-20 mx-auto shadow" />
+                <CaretLeft className=" w-20 h-20 shadow" />
               </button>
 
               <button
-                className="delay-100 w-28 h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr bg-rl-gradient hover:bg-black/70"
+                className="delay-100 w-auto h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr text-violet-900 hover:text-violet-500"
                 onClick={(e: any) =>
                   e.stopPropagation() || instanceRef.current?.prev()
                 }
               >
                 <CaretRight
-                  className="text-violet-500 w-20 h-20 mx-auto shadow"
+                  className=" w-20 h-20  shadow"
                   onClick={(e: any) =>
                     e.stopPropagation() || instanceRef.current?.next()
                   }
