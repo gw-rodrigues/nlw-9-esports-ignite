@@ -121,6 +121,7 @@ app.get("/games/:id/ads", async (request, response) => {
       name: true,
       weekDays: true,
       useVoiceChannel: true,
+      discord: true,
       yearsPlaying: true,
       hourStart: true,
       hourEnd: true,
