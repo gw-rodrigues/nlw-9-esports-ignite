@@ -124,22 +124,22 @@ function App() {
           {sliderDataLoaded && sliderCreated && instanceRef.current && (
             <>
               <button
-                className="delay 100 w-auto h-[100%] left-0 absolute z-10 cursor-pointer rounded-tl text-left text-violet-900 hover:text-violet-500"
+                className="delay 100 w-auto h-[100%] left-0 absolute cursor-pointer rounded-tl text-left text-violet-900 hover:text-violet-500"
                 onClick={(e: any) =>
                   e.stopPropagation() || instanceRef.current?.prev()
                 }
               >
-                <CaretLeft className=" w-20 h-20 shadow" />
+                <CaretLeft className=" w-20 h-20" />
               </button>
 
               <button
-                className="delay-100 w-auto h-[100%] right-0 absolute z-10 cursor-pointer rounded-tr text-violet-900 hover:text-violet-500"
+                className="delay-100 w-auto h-[100%] right-0 absolute  cursor-pointer rounded-tr text-violet-900 hover:text-violet-500"
                 onClick={(e: any) =>
                   e.stopPropagation() || instanceRef.current?.prev()
                 }
               >
                 <CaretRight
-                  className=" w-20 h-20  shadow"
+                  className=" w-20 h-20"
                   onClick={(e: any) =>
                     e.stopPropagation() || instanceRef.current?.next()
                   }
