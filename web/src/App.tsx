@@ -85,10 +85,14 @@ function App() {
   );
 
   return (
-    <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20">
-      <img src={logoImg} alt="logo" className="animate-pulse" />
+    <div className="max-w-[1344px] mx-auto flex flex-col items-center m-20 px-4 sm:px-0">
+      <img
+        src={logoImg}
+        alt="logo"
+        className="animate-pulse sm:w-[60%] max-w-[286px] h-auto"
+      />
 
-      <h1 className="text-6xl text-white font-black mt-20">
+      <h1 className="text-4xl sm:text-6xl text-white font-black mt-20">
         Seu{" "}
         <span className="bg-nlw-gradient bg-clip-text text-transparent">
           duo
