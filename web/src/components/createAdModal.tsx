@@ -107,7 +107,7 @@ export function CreateAdModal() {
   }
 
   return (
-    <Dialog.Portal className="h-[85vh] overflow-visible">
+    <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed animate-[show_0.2s_ease-in]" />
       {!isSubmitting && !isSubmitted && (
         <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-8 bg-[#2A2634] text-white rounded-lg w-[95vw] max-w-[480px] animate-[show_0.2s_ease-in]">
@@ -117,10 +117,9 @@ export function CreateAdModal() {
 
           <form
             onSubmit={handleSubmit(handleCreateAt)}
-            className=""
           >
-            <div className="h-[60vh] relative overflow-y-auto bg-scroll px-4 sm:px-10 flex flex-col gap-8 my-8">
-              <div className="flex flex-col gap-2">
+            <div className="h-[60vh] relative overflow-y-auto bg-scroll px-4 sm:px-10 flex flex-col gap-8 my-8 py-8 border-t border-b border-zinc-700">
+              <div className="flex flex-col gap-2 ">
                 <label htmlFor="game">Qual o game?</label>
 
                 <Select

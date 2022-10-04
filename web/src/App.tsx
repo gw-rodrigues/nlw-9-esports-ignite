@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { SpinnerGap, CaretRight, CaretLeft } from "phosphor-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { useKeenSlider } from "keen-slider/react";
+import { useMediaQuery } from "react-responsive";
 
 import logoImg from "./assets/logo-nlw-esports.svg";
 import { GameBanner } from "./components/GamerBanner";
 import { CreateAdBanner } from "./components/CreateAdBanner";
 import { CreateAdModal } from "./components/CreateAdModal";
+import GetGameAdModal from "./components/GetGameAdModal";
 
-import { SpinnerGap, CaretRight, CaretLeft } from "phosphor-react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./styles/main.css";
-import GetGameAdModal from "./components/GetGameAdModal";
 
 export interface Game {
   id: string;
@@ -41,13 +42,26 @@ function App() {
     });
   }, []);
 
+  const isMobileLg = useMediaQuery({ query: `(max-width: 900px)` });
+  const isMobileMd = useMediaQuery({ query: `(max-width: 700px)` });
+  const isMobileSm = useMediaQuery({ query: `(max-width: 500px)` });
+  const isMobileXs = useMediaQuery({ query: `(max-width: 320px)` });
+
+  let slidePerView = 5;
+
+  if (isMobileLg) slidePerView = 4
+  if (isMobileMd) slidePerView = 3
+  if (isMobileSm) slidePerView = 2
+  if (isMobileXs) slidePerView = 1
+
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
-      mode: "free",
+      mode: "free-snap",
       slides: {
+        origin: "center",
         number: games.length,
-        perView: 5,
+        perView: slidePerView,
         spacing: 15,
       },
     },

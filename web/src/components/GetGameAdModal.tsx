@@ -45,9 +45,9 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
 
   const [gameAdsSliderRef, gameAdsSliderInstanceRef] =
     useKeenSlider<HTMLDivElement>({
-      initial: 0,
       loop: true,
       slides: {
+        origin: "center",
         number: gameAds.length,
         perView: 1,
         spacing: 15,
@@ -56,9 +56,9 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
-      <Dialog.Content className="fixed overflow-auto bg-[#2A2634] py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[480px]">
-        <div className="w-[100%] h-52 overflow-hidden my-4 rounded-lg">
+      <Dialog.Overlay className="bg-black/60 inset-0 fixed animate-[show_0.2s_ease-in]" />
+      <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-4 bg-[#2A2634] text-white rounded-lg w-[95vw] max-w-[480px] animate-[show_0.2s_ease-in]">
+        <div className="w-[100%] h-28 sm:h-40 overflow-hidden my-4 rounded-lg px-4 sm:px-10">
           <img
             className="w-[100%] h-auto"
             src={game.bannerUrl}
@@ -66,21 +66,23 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
           />
         </div>
 
-        <Dialog.Title className="text-3xl font-black">
-          {game.title}
-        </Dialog.Title>
-        <h3>Conecte-se e comece a jogar!</h3>
+        <div className=" px-6 sm:px-8">
+          <Dialog.Title className="text-lg sm:text-3xl font-black">
+            {game.title}
+          </Dialog.Title>
+          <h3>Conecte-se e comece a jogar!</h3>
+        </div>
 
-        <div className="w-[100%] relative mt-5 flex justify-center items-center">
+        <div className="w-[100%] relative mt-2 flex justify-center items-center">
           <div className=" w-[60%]">
             {gameAds && isGameAdsLoaded ? (
               <div className="keen-slider z-0 relative" ref={gameAdsSliderRef}>
                 {gameAds.map((ads: GameAds) => (
-                  <div key={ads.id} className="keen-slider__slide p-2 px-4">
+                  <div key={ads.id} className="keen-slider__slide px-4">
                     <strong className="w-[100%] text-lg text-center font-bold text-white block mx-auto">
                       {ads.name}
                     </strong>
-                    <div className="min-h-[150px] flex flex-col gap-2 rounded text-white">
+                    <div className=" flex flex-col gap-2 rounded text-white">
                       <p className="text-xs text-center border-t m-1 border-violet-600 pt-2">
                         Jogando há
                         {ads.yearsPlaying === 1
@@ -155,7 +157,11 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
                         <span className="text-sm text-zinc-300 pr-2">
                           Usa chat de voz:
                         </span>
-                        {ads.useVoiceChannel ? <span className="text-green-500 text-xs">SIM</span> : <span className="text-red-500 text-xs">NAO</span>}
+                        {ads.useVoiceChannel ? (
+                          <span className="text-green-500 text-xs">SIM</span>
+                        ) : (
+                          <span className="text-red-500 text-xs">NAO</span>
+                        )}
                       </p>
 
                       <p className="text-center border-t mt-2 border-violet-600 pt-2">
@@ -232,7 +238,7 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
           {`${gameAds.length > 1 ? "es" : ""} a procura.`}
         </div>
 
-        <footer className="mt-8 flex gap-4 justify-end">
+        <footer className="mt-8 px-10 flex gap-4 justify-end">
           <Dialog.Close
             type="button"
             className="bg-zinc-500 px-5 h-12 rounded-md font-semibold hover:bg-zinc-600"
