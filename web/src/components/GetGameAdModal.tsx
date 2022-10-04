@@ -225,7 +225,7 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
             )}
         </div>
 
-        <div className="m-4">
+        <div className="m-4 px-5">
           Existe{" "}
           <span
             className={`font-bold mx-1 ${
@@ -241,7 +241,7 @@ export default function GetGameAdModal({ game }: GetGameAdModal) {
         <footer className="mt-8 px-10 flex gap-4 justify-end">
           <Dialog.Close
             type="button"
-            className="bg-zinc-500 px-5 h-12 rounded-md font-semibold hover:bg-zinc-600"
+            className="bg-zinc-500 px-6 h-12 rounded-md font-semibold hover:bg-zinc-600"
           >
             Fechar
           </Dialog.Close>
