@@ -43,7 +43,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 [![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](./LICENSE)
 ![GitHub Repo stars](https://img.shields.io/github/stars/gw-rodrigues/nlw-9-esports-ignite?style=for-the-badge)
-
 ![GitHub last commit](https://img.shields.io/github/last-commit/gw-rodrigues/nlw-9-esports-ignite?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/gw-rodrigues/nlw-9-esports-ignite?style=for-the-badge)
 
